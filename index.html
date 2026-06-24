@@ -5,10 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Portal de Evaluaciones | Prácticas ITM</title>
   
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.3/babel.min.js"></script>
@@ -489,52 +485,6 @@
     ];
 
     // ==========================================
-    // COMPONENTE 1: PANTALLA DE BIENVENIDA
-    // ==========================================
-    function WelcomeScreen({ onStart }) {
-      const [formData, setFormData] = useState({ nombre: '', cc: '', email: '' });
-      const handleSubmit = (e) => { e.preventDefault(); onStart(formData); };
-      
-      return (
-        <div className="flex flex-col items-center justify-center min-h-screen p-4 pb-12">
-          <div className="mb-8 text-center mt-8">
-            <img src="./logo-azul.png" alt="Logo ITM" className="h-20 md:h-24 mx-auto object-contain" onError={(e) => { e.target.style.display = 'none'; e.target.insertAdjacentHTML('afterend', '<h1 class="text-3xl font-bold text-itm-blue">ITM</h1>'); }} />
-          </div>
-          <div className="text-center mb-6 max-w-lg">
-            <h1 className="text-3xl font-extrabold text-itm-blue tracking-tight mb-2">Portal de Evaluaciones</h1>
-            <p className="text-gray-500 font-medium">Oficina de Prácticas Profesionales</p>
-          </div>
-          <div className="glass-card max-w-md w-full p-8 relative overflow-hidden">
-            <div className="absolute top-0 left-0 w-full h-1 bg-itm-blue"></div>
-            <div className="bg-blue-50/80 border border-blue-100 rounded-lg p-4 mb-8 flex items-center gap-4">
-               <div className="text-itm-blue bg-white p-2 rounded-full shadow-sm">
-                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-               </div>
-               <p className="text-sm text-itm-blue font-medium leading-relaxed">Para personalizar tu evaluación y generar tu constancia, regístrate con tus datos institucionales.</p>
-            </div>
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div>
-                <label className="block text-sm font-bold text-itm-blue mb-2">Cédula de Ciudadanía (CC)</label>
-                <input required type="number" placeholder="Ej: 1234567890" className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-itm-blue focus:border-itm-blue outline-none transition-colors" value={formData.cc} onChange={e => setFormData({...formData, cc: e.target.value})} />
-              </div>
-              <div>
-                <label className="block text-sm font-bold text-itm-blue mb-2">Nombre Completo</label>
-                <input required type="text" placeholder="Ej: Juan David Gómez López" className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-itm-blue focus:border-itm-blue outline-none transition-colors" value={formData.nombre} onChange={e => setFormData({...formData, nombre: e.target.value})} />
-              </div>
-              <div>
-                <label className="block text-sm font-bold text-itm-blue mb-2">Correo Institucional</label>
-                <input required type="email" placeholder="Ej: usuario@correo.itm.edu.co" className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-itm-blue focus:border-itm-blue outline-none transition-colors" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} />
-              </div>
-              <button type="submit" className="btn-primary w-full py-4 font-bold text-[15px] mt-4 flex justify-center items-center gap-2">
-                ¡Ingresar al Portal! <span aria-hidden="true">&rarr;</span>
-              </button>
-            </form>
-          </div>
-        </div>
-      );
-    }
-
-    // ==========================================
     // COMPONENTE 2: LOBBY DE SELECCIÓN
     // ==========================================
     function LobbyScreen({ user, nieCompleted, destrezasCompleted, onSelectTest, onLogout }) {
@@ -544,14 +494,14 @@
           <div className="bg-itm-blue w-full px-6 py-5 shadow-md">
             <div className="max-w-5xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
               <div className="flex items-center gap-4">
-                <img src="./logo-blanco.png" alt="ITM" className="h-10 md:h-12 object-contain" />
+                <img src="/logo itm.jpeg" alt="ITM" className="h-10 md:h-12 object-contain" />
                 <div><h1 className="text-white font-bold text-lg md:text-xl leading-tight">Portal de Evaluación Preprácticas</h1></div>
               </div>
               <div className="bg-white/10 px-4 py-2 rounded-lg text-white text-sm flex items-center gap-4">
                 <span>👤 {user.nombre}</span>
                 <div className="w-px h-4 bg-white/30"></div>
-                <button onClick={onLogout} className="font-bold text-orange-300 hover:text-orange-400 transition-colors flex items-center gap-1">
-                  Cerrar Sesión <span>×</span>
+                <button onClick={() => window.location.href = 'dashboard.html'} className="font-bold text-orange-300 hover:text-orange-400 transition-colors flex items-center gap-1">
+                  Volver al Dashboard <span>&larr;</span>
                 </button>
               </div>
             </div>
@@ -562,15 +512,13 @@
               <div className="bg-blue-50 border-l-4 border-itm-blue p-5 rounded-r-lg shadow-sm mb-8">
                 <h2 className="text-lg font-bold text-itm-blue flex items-center gap-2"><span>👋</span> ¡Hola, {user.nombre.split(' ')[0]}!</h2>
                 <p className="text-gray-700 mt-1">
-                  {(!nieCompleted && !destrezasCompleted) && "Para completar tu perfil, debes realizar las dos pruebas a continuación. Puedes empezar por la que prefieras."}
-                  {(nieCompleted && !destrezasCompleted) && "¡Excelente trabajo! Ya completaste tu primer test. Ahora te sugerimos continuar con el Perfil de Destrezas Personales."}
-                  {(!nieCompleted && destrezasCompleted) && "¡Muy bien! Ya terminaste la primera parte. Ahora por favor completa el Test de Inteligencia Emocional."}
+                  Aquí puedes realizar las dos pruebas psicotécnicas reglamentarias. Tu progreso se guardará automáticamente.
                 </p>
               </div>
             ) : (
               <div className="bg-green-50 border-l-4 border-green-500 p-5 rounded-r-lg shadow-sm mb-8 text-center md:text-left">
-                <h2 className="text-xl font-bold text-green-700">¡Felicidades, has completado todo! 🎉</h2>
-                <p className="text-green-600 mt-1">Has finalizado exitosamente todas las evaluaciones requeridas por la Oficina de Prácticas.</p>
+                <h2 className="text-xl font-bold text-green-700">¡Evaluaciones Finalizadas! 🎉</h2>
+                <p className="text-green-600 mt-1">Has guardado y enviado tus reportes de pruebas psicotécnicas a la Oficina de Prácticas.</p>
               </div>
             )}
 
@@ -583,8 +531,8 @@
                   </div>
                   <h3 className="text-xl font-bold text-itm-blue mb-2">Inteligencia Emocional (N.I.E.)</h3>
                   <p className="text-gray-500 text-sm mb-6 h-10">Evalúa tu coeficiente emocional, manejo del estrés y conexiones interpersonales.</p>
-                  <button onClick={() => onSelectTest('nie')} disabled={nieCompleted} className={`w-full py-3 rounded-lg font-bold transition-colors ${nieCompleted ? 'bg-gray-200 text-gray-500 cursor-not-allowed' : 'bg-itm-blue text-white hover:bg-blue-800'}`}>
-                    {nieCompleted ? 'Prueba Finalizada' : 'Iniciar Prueba →'}
+                  <button onClick={() => onSelectTest('nie')} className={`w-full py-3 rounded-lg font-bold transition-colors ${nieCompleted ? 'bg-green-600 text-white hover:bg-green-700' : 'bg-itm-blue text-white hover:bg-blue-800'}`}>
+                    {nieCompleted ? 'Modificar Respuestas / Ver' : 'Iniciar Prueba →'}
                   </button>
                 </div>
               </div>
@@ -597,11 +545,17 @@
                   </div>
                   <h3 className="text-xl font-bold text-itm-blue mb-2">Perfil de Destrezas Personales</h3>
                   <p className="text-gray-500 text-sm mb-6 h-10">Autoevaluación de habilidades de liderazgo, analíticas y comunicativas.</p>
-                  <button onClick={() => onSelectTest('destrezas')} disabled={destrezasCompleted} className={`w-full py-3 rounded-lg font-bold transition-colors ${destrezasCompleted ? 'bg-gray-200 text-gray-500 cursor-not-allowed' : 'bg-itm-accent text-white hover:bg-orange-600'}`}>
-                    {destrezasCompleted ? 'Prueba Finalizada' : 'Iniciar Prueba →'}
+                  <button onClick={() => onSelectTest('destrezas')} className={`w-full py-3 rounded-lg font-bold transition-colors ${destrezasCompleted ? 'bg-green-600 text-white hover:bg-green-700' : 'bg-itm-accent text-white hover:bg-orange-600'}`}>
+                    {destrezasCompleted ? 'Modificar Respuestas / Ver' : 'Iniciar Prueba →'}
                   </button>
                 </div>
               </div>
+            </div>
+
+            <div className="mt-8 text-center">
+              <button onClick={() => window.location.href = 'dashboard.html'} className="px-6 py-3 border-2 border-itm-blue text-itm-blue rounded-full font-bold hover:bg-itm-blue hover:text-white transition-all text-sm shadow-sm">
+                &larr; Volver al Menú del Dashboard Unificado
+              </button>
             </div>
           </div>
         </div>
@@ -646,7 +600,7 @@
               <div className="font-bold text-itm-blue">Test N.I.E.</div>
               <div className="flex items-center gap-4">
                 <span className="text-sm font-semibold text-gray-500 hidden md:block">Sección {currentSectionIdx + 1} de {N_I_E_DATA.length}</span>
-                <button onClick={onBackLobby} className="text-xs md:text-sm text-red-500 font-bold hover:underline">Pausar y Salir</button>
+                <button onClick={() => window.location.href = 'dashboard.html'} className="text-xs md:text-sm text-red-500 font-bold hover:underline">Pausar y Salir</button>
               </div>
             </div>
             <div className="max-w-4xl mx-auto h-1.5 bg-gray-100 rounded-full mt-4 overflow-hidden">
@@ -730,7 +684,7 @@
               <div className="font-bold text-itm-blue">Perfil de Destrezas</div>
               <div className="flex items-center gap-4">
                 <span className="text-sm font-semibold text-gray-500 hidden md:block">Factor {currentSectionIdx + 1} de {DESTREZAS_DATA.length}</span>
-                <button onClick={onBackLobby} className="text-xs md:text-sm text-red-500 font-bold hover:underline">Pausar y Salir</button>
+                <button onClick={() => window.location.href = 'dashboard.html'} className="text-xs md:text-sm text-red-500 font-bold hover:underline">Pausar y Salir</button>
               </div>
             </div>
             <div className="max-w-4xl mx-auto h-1.5 bg-gray-100 rounded-full mt-4 overflow-hidden">
@@ -784,20 +738,19 @@
     // CONTROLADOR PRINCIPAL (APP)
     // ==========================================
     function App() {
-      const [user, setUser] = useState(() => {
-        const saved = localStorage.getItem('itm_user');
-        return saved ? JSON.parse(saved) : null;
-      });
+      const urlParams = new URLSearchParams(window.location.search);
+      const testDesdeUrl = urlParams.get('test');
+
+      const [user, setUser] = useState(null);
       
       const [screen, setScreen] = useState(() => {
-        const savedScreen = localStorage.getItem('itm_screen');
-        if (savedScreen === 'results_nie' || savedScreen === 'results_destrezas') return 'lobby'; // Evita quedarse trabado en resultados al recargar
-        if (savedScreen) return savedScreen;
-        return localStorage.getItem('itm_user') ? 'lobby' : 'welcome';
+        if (testDesdeUrl === 'nie') return 'test_nie';
+        if (testDesdeUrl === 'destrezas') return 'test_destrezas';
+        return 'lobby';
       });
       
-      const [nieCompleted, setNieCompleted] = useState(() => { return JSON.parse(localStorage.getItem('itm_nie_completed')) || false; });
-      const [destrezasCompleted, setDestrezasCompleted] = useState(() => { return JSON.parse(localStorage.getItem('itm_destrezas_completed')) || false; });
+      const [nieCompleted, setNieCompleted] = useState(false);
+      const [destrezasCompleted, setDestrezasCompleted] = useState(false);
       
       const [calculatedResults, setCalculatedResults] = useState([]);
       const [calculatedDestrezas, setCalculatedDestrezas] = useState([]);
@@ -805,24 +758,47 @@
       const [isSubmitting, setIsSubmitting] = useState(false);
       const [submitSuccess, setSubmitSuccess] = useState(false);
 
+      // Sincronizar credenciales y cargar el test correcto directamente sin escalas
       useEffect(() => {
-        if (user) localStorage.setItem('itm_user', JSON.stringify(user));
-        else localStorage.removeItem('itm_user');
-      }, [user]);
+        const cc = urlParams.get('cc');
+        const nombre = urlParams.get('nombre');
+        const email = urlParams.get('email');
+
+        if (cc && nombre && email) {
+          const activeUser = { cc, nombre, email };
+          setUser(activeUser);
+          localStorage.setItem('itm_user', JSON.stringify(activeUser));
+
+          const keyStatus = `itm_status_${cc}`;
+          const savedStatus = JSON.parse(localStorage.getItem(keyStatus)) || {
+            nieCompleted: false, desCompleted: false, hvCompleted: false, compromisoCompleted: false
+          };
+          
+          setNieCompleted(savedStatus.nieCompleted);
+          setDestrezasCompleted(savedStatus.desCompleted);
+
+          // Forzado síncrono del estado de la pantalla para evitar que caiga en el lobby por descarte
+          if (testDesdeUrl === 'nie') {
+            setScreen('test_nie');
+          } else if (testDesdeUrl === 'destrezas') {
+            setScreen('test_destrezas');
+          }
+        } else {
+          window.location.href = 'dashboard.html';
+        }
+      }, []);
 
       useEffect(() => { localStorage.setItem('itm_screen', screen); }, [screen]);
       useEffect(() => { localStorage.setItem('itm_nie_completed', JSON.stringify(nieCompleted)); }, [nieCompleted]);
       useEffect(() => { localStorage.setItem('itm_destrezas_completed', JSON.stringify(destrezasCompleted)); }, [destrezasCompleted]);
 
       const handleLogout = () => {
-        if(window.confirm("¿Estás seguro de que deseas salir? (Tu progreso de los tests no terminados se perderá en este navegador).")) {
-          setUser(null);
-          setNieCompleted(false);
-          setDestrezasCompleted(false);
-          setScreen('welcome');
-          localStorage.clear();
-          window.scrollTo(0,0);
-        }
+        setUser(null);
+        setNieCompleted(false);
+        setDestrezasCompleted(false);
+        setScreen('welcome');
+        localStorage.clear();
+        window.location.href = 'dashboard.html';
       };
 
       // --- CALCULADORA N.I.E. ---
@@ -981,6 +957,12 @@
           if (response.ok) { 
             setSubmitSuccess(true); 
             setNieCompleted(true); 
+            
+            const keyStatus = `itm_status_${user.cc}`;
+            const currentStatus = JSON.parse(localStorage.getItem(keyStatus)) || {};
+            currentStatus.nieCompleted = true;
+            localStorage.setItem(keyStatus, JSON.stringify(currentStatus));
+
             localStorage.removeItem('itm_nie_idx');
             localStorage.removeItem('itm_nie_answers');
             window.scrollTo(0,0); 
@@ -1021,6 +1003,12 @@
           if (response.ok) { 
             setSubmitSuccess(true); 
             setDestrezasCompleted(true); 
+
+            const keyStatus = `itm_status_${user.cc}`;
+            const currentStatus = JSON.parse(localStorage.getItem(keyStatus)) || {};
+            currentStatus.desCompleted = true;
+            localStorage.setItem(keyStatus, JSON.stringify(currentStatus));
+
             localStorage.removeItem('itm_des_idx');
             localStorage.removeItem('itm_des_answers');
             window.scrollTo(0,0); 
@@ -1033,10 +1021,12 @@
         });
       };
 
+      if (!user) {
+        return <div className="p-8 text-center font-bold text-itm-blue">Sincronizando portal de evaluaciones...</div>;
+      }
+
       return (
         <div>
-          {screen === 'welcome' && <WelcomeScreen onStart={userData => { setUser(userData); setScreen('lobby'); window.scrollTo(0,0); }} />}
-          
           {screen === 'lobby' && (
             <LobbyScreen user={user} nieCompleted={nieCompleted} destrezasCompleted={destrezasCompleted} onLogout={handleLogout} onSelectTest={(testName) => { setSubmitSuccess(false); setScreen(testName === 'nie' ? 'test_nie' : 'test_destrezas'); window.scrollTo(0,0); }} />
           )}
@@ -1067,8 +1057,8 @@
                     </span>
                     <h2 className="text-3xl font-extrabold text-itm-blue mb-3">¡Reporte Enviado!</h2>
                     <p className="text-gray-600 text-lg mb-8">Tu evaluación N.I.E. ha sido registrada exitosamente.</p>
-                    <button onClick={() => { setSubmitSuccess(false); setScreen('lobby'); window.scrollTo(0,0); }} className="btn-primary px-8 py-3 font-bold">
-                      Volver al Menú Principal
+                    <button onClick={() => { window.location.href = 'dashboard.html'; }} className="btn-primary px-8 py-3 font-bold">
+                      Volver al Dashboard General
                     </button>
                   </div>
                 ) : (
@@ -1123,7 +1113,7 @@
                     </span>
                     <h2 className="text-3xl font-extrabold text-itm-blue mb-3">¡Reporte Enviado!</h2>
                     <p className="text-gray-600 text-lg mb-8">Tu evaluación de Destrezas ha sido registrada exitosamente.</p>
-                    <button onClick={() => { setSubmitSuccess(false); setScreen('lobby'); window.scrollTo(0,0); }} className="btn-primary px-8 py-3 font-bold">Volver al Menú Principal</button>
+                    <button onClick={() => { window.location.href = 'dashboard.html'; }} className="btn-primary px-8 py-3 font-bold">Volver al Dashboard General</button>
                   </div>
                 ) : (
                   <>

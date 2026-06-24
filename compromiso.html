@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FDE-XXX · Acta de Compromiso de Prácticas · ITM</title>
+<style>
+  :root {
+    --azul:    #102D69;
+    --azul-l: #E8EDF5;
+    --blanco:        #FFFFFF;
+    --negro:         #1A1A1A;
+    --gris-l:        #F4F6F9;
+    --gris-m:        #C5CDD8;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: Arial, sans-serif;
+    font-size: 9pt;
+    color: var(--negro);
+    background: #b0b0b0;
+  }
+
+  .page {
+    width: 216mm;
+    min-height: 279mm;
+    margin: 10mm auto;
+    background: var(--blanco);
+    padding: 10mm 12mm 10mm;
+    box-shadow: 0 2px 14px rgba(0,0,0,.30);
+    overflow-x: hidden;
+  }
+
+  .btn-actions {
+    display: flex;
+    gap: 15px;
+    width: 216mm;
+    margin: 0 auto 5px;
+  }
+
+  .btn {
+    flex: 1;
+    padding: 12px 0;
+    color: #fff;
+    font-size: 11pt;
+    font-weight: bold;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  }
+  .btn-submit { background: #28a745; }
+  .btn-submit:hover { background: #218838; }
+  .btn-pdf { background: var(--azul); }
+  .btn-pdf:hover { background: #0b2050; }
+
+  .tw { border-radius: 8px; overflow: hidden; box-shadow: 0 1px 5px rgba(16,45,105,.09); margin-bottom: 8px; }
+  table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+  td { vertical-align: middle; padding: 6px 9px; font-size: 9pt; line-height: 1.45; }
+
+  .sec-title {
+    display: flex; align-items: center; gap: 10px;
+    background: var(--azul-l); border: 1px solid #C8D5EA;
+    border-radius: 6px; padding: 6px 12px; margin: 15px 0 8px;
+  }
+  .sec-num {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 24px; height: 24px; border-radius: 50%; background: var(--azul); color: #fff;
+    font-size: 9pt; font-weight: 800; text-align: center; line-height: 24px;
+  }
+  .sec-text { font-size: 9pt; font-weight: 700; color: var(--azul); letter-spacing: .3px; }
+
+  .lbl { background: var(--azul-l); font-weight: bold; color: var(--azul); font-size: 8.5pt; border: 1px solid var(--gris-m); width: 30%; }
+  td.input-cell { border: 1px solid var(--gris-m); background: #fff; }
+  td.input-cell.alt { background: var(--gris-l); }
+
+  input[type="text"], input[type="date"], select {
+    width: 100%; border: none; background: transparent; font-family: Arial, sans-serif; font-size: 9pt; color: var(--negro); outline: none;
+  }
+  input[type="text"], input[type="date"] { height: 22px; }
+  select { cursor: pointer; }
+
+  .legal-text-box {
+    background: #fff;
+    border: 1px solid var(--gris-m);
+    border-radius: 6px;
+    padding: 12px;
+    margin-bottom: 12px;
+    text-align: justify;
+    line-height: 1.6;
+  }
+  .legal-item {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+    font-size: 8.5pt;
+    color: #222;
+  }
+  .legal-item span.bullet {
+    color: var(--azul);
+    font-weight: bold;
+  }
+
+  label.chk { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; font-weight: bold; color: var(--azul); }
+  
+  .firma-lbl { font-size: 7.5pt; color: #555; margin-top: 5px; font-weight: bold; }
+  .firma-line { border-bottom: 1px solid var(--gris-m); margin: 15px 0 2px; }
+  
+  .firma-container {
+    text-align: center;
+    padding: 15px;
+  }
+  .preview-firma {
+    max-height: 65px;
+    max-width: 165px;
+    margin: 5px auto;
+    display: none;
+    border: 1px dashed var(--gris-m);
+  }
+
+  @media print {
+    body { background: none; }
+    .btn-actions, input[type="file"] { display: none !important; }
+    .page { margin: 0; box-shadow: none; padding: 4mm; width: 100%; }
+    input[type="text"], input[type="date"], select { border-bottom: 1px solid #bbb !important; }
+    @page { size: letter; margin: 10mm 12mm; }
+  }
+</style>
+</head>
+<body>
+
+<div class="btn-actions">
+  <button class="btn btn-submit" onclick="enviarCompromiso()">Enviar Compromiso Formalizado</button>
+  <button class="btn btn-pdf" onclick="window.print()">⬇ Previsualizar / Imprimir PDF</button>
+</div>
+
+<div class="page" id="compromiso-container">
+  
+  <div class="tw">
+    <table>
+      <colgroup><col style="width:120px"><col><col style="width:120px"></colgroup>
+      <tr>
+        <td rowspan="2" style="text-align:center; border:1px solid #C8D5EA; padding:5px; vertical-align: middle;">
+          <img src="/LOGO ITM 2020-02.png" alt="Logo ITM" style="width: 100px; height: auto; display: block; margin: 0 auto;">
+        </td>
+        <td style="text-align:center; border:1px solid #C8D5EA; padding:10px;">
+          <h2 style="font-size:11pt; color:var(--azul); font-weight:bold;">COMPROMISO DE RESPONSABILIDADES EN EL PROCESO DE PRÁCTICAS</h2>
+        </td>
+        <td rowspan="2" style="border:1px solid #C8D5EA; font-size:8pt; padding:6px;">
+          <p><strong>Código:</strong> GDE 002</p>
+          <p><strong>Versión:</strong> 05</p>
+          <p><strong>Fecha:</strong> 30-05-2024</p>
+
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <form id="compromisoForm">
+    
+    <div class="sec-title"><span class="sec-num">1</span><span class="sec-text">IDENTIFICACIÓN DEL ESTUDIANTE</span></div>
+    <div class="tw">
+      <table>
+        <tr><td class="lbl">Nombre Completo:</td><td class="input-cell"><input type="text" id="nombre" required placeholder="Escriba su nombre completo"></td></tr>
+        <tr>
+          <td class="lbl">Facultad:</td>
+          <td class="input-cell alt">
+            <select id="facultad" onchange="filtrarProgramas()" required>
+              <option value="">-- Seleccione facultad --</option>
+              <option value="Artes">Facultad de Artes y Humanidades</option>
+              <option value="Economicas">Facultad de Ciencias Económicas y Administrativas</option>
+              <option value="Exactas">Facultad de Ciencias Exactas y Aplicadas</option>
+              <option value="Ingenierias">Facultad de Ingenierías</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td class="lbl">Programa Académico:</td>
+          <td class="input-cell">
+            <select id="programa" required>
+              <option value="">-- Seleccione primero la facultad --</option>
+            </select>
+          </td>
+        </tr>
+        <tr><td class="lbl">Cédula de Ciudadanía N°:</td><td class="input-cell alt"><input type="text" id="documento" required placeholder="Número de identificación"></td></tr>
+        <tr><td class="lbl">Número de Celular:</td><td class="input-cell"><input type="text" id="celular" required placeholder="Ej. 3001234567"></td></tr>
+        <tr><td class="lbl">Correo Electrónico Institucional:</td><td class="input-cell alt"><input type="text" id="correo" placeholder="usuario@correo.itm.edu.co" required></td></tr>
+        <tr><td class="lbl">Fecha de Formalización:</td><td class="input-cell"><input type="date" id="fecha_suscripcion" required></td></tr>
+      </table>
+    </div>
+
+    <div class="sec-title"><span class="sec-num">2</span><span class="sec-text">DECLARACIÓN DE RESPONSABILIDADES Y COMPROMISOS</span></div>
+    
+    <div class="legal-text-box">
+      <p style="font-size: 9pt; font-weight: bold; margin-bottom: 12px; color: var(--azul);">
+        Yo, el estudiante previamente identificado, de manera voluntaria y consciente, me comprometo a cumplir rigurosamente las siguientes responsabilidades durante todo mi proceso de práctica:
+      </p>
+      
+      <div class="legal-item"><span class="bullet">1.</span><span>Conocer y acatar a cabalidad el reglamento estudiantil vigente, las resoluciones específicas de las Facultades y las pautas estipuladas en el Manual de Prácticas del ITM[cite: 58].</span></div>
+      <div class="legal-item"><span class="bullet">2.</span><span>Realizar y aprobar en su totalidad la formación de pre-práctica como requisito de carácter obligatorio para postularse al inicio de la modalidad de Prácticas Empresariales[cite: 59].</span></div>
+      <div class="legal-item"><span class="bullet">3.</span><span>Asistir con absoluta puntualidad, excelente presentación y responsabilidad a las entrevistas, pruebas técnicas o citas de selección a las que me haya comprometido formalmente con una organización[cite: 60].</span></div>
+      <div class="legal-item"><span class="bullet">4.</span><span>Iniciar las actividades de la práctica una vez cumplidos de forma estricta todos los términos contractuales y normativos exigidos tanto por la Institución Universitaria como por la empresa patrocinadora[cite: 61].</span></div>
+      <div class="legal-item"><span class="bullet">5.</span><span>Aceptar y comprender que, por ningún motivo, podré retirarme o abandonar una práctica en ejecución para aceptar ofertas o vinculaciones en otra empresa[cite: 61]. La Oficina de Prácticas del ITM solo entregará una única carta de inicio por estudiante[cite: 62].</span></div>
+      <div class="legal-item"><span class="bullet">6.</span><span>Informar de manera oportuna y estrictamente por escrito al Asesor Académico asignado, a mi jefe inmediato o al Coordinador de Prácticas sobre cualquier dificultad, anomalía o caso fortuito surgido en el desarrollo de mis funciones[cite: 63].</span></div>
+      <div class="legal-item"><span class="bullet">7.</span><span>No renunciar bajo ninguna circunstancia a la práctica sin antes contar con el debido proceso de asesoría, mediación y autorización expresa del equipo técnico de la Oficina de Prácticas[cite: 64].</span></div>
+      <div class="legal-item"><span class="bullet">8.</span><span>Informar de inmediato a la Oficina de Prácticas si en algún momento de la vigencia del proceso pierdo el derecho al programa por causales académicas o disciplinarias [cite: 65], entendiendo que es obligación estar matriculado activamente en el ITM durante todo el desarrollo de la práctica[cite: 66].</span></div>
+      <div class="legal-item"><span class="bullet">9.</span><span>Cumplir de acuerdo con la reglamentación interna de cada facultad con el respectivo requerimiento de matrícula y carga académica de la asignatura Trabajo de Grado[cite: 67].</span></div>
+      <div class="legal-item"><span class="bullet">10.</span><span>Atender de manera obligatoria todos los requerimientos, cronogramas de visitas de seguimiento, entregas de informes mensuales y citaciones que el Asesor, la facultad o la Oficina de Prácticas realicen para los fines del desarrollo del proceso pedagógico[cite: 68].</span></div>
+      <div class="legal-item"><span class="bullet">11.</span><span>Ejecutar mis labores dentro de los marcos normativos, éticos y disciplinarios del Reglamento Interno de Trabajo, así como cumplir los protocolos del Sistema de Gestión de la Seguridad y Salud en el Trabajo (SG-SST) establecidos por la empresa de acogida[cite: 69].</span></div>
+      
+      <p style="font-size: 9pt; font-weight: bold; margin-top: 15px; color: #dc3545; border-top: 1px dashed var(--gris-m); padding-top: 10px;">
+        ⚠️ MANIFESTACIÓN DE ACEPTACIÓN DE SANCIONES:
+      </p>
+      <p style="font-size: 8.5pt; color: #333; text-align: justify; margin-top: 5px;">
+        Entiendo, acepto y ratifico que si incumplo con alguno de los compromisos corporativos o académicos anteriormente mencionados en este documento, autorizo expresamente a ser retirado del proceso de práctica vigente[cite: 70]. Asimismo, declaro conocer que estaré sujeto a las sanciones disciplinarias y reglamentarias que determine el Consejo de Facultad en concordancia con el Reglamento Estudiantil del ITM[cite: 71].
+      </p>
+    </div>
+
+    <div class="tw" style="background: var(--azul-l); padding: 12px; border: 1px solid var(--gris-m);">
+      <label class="chk">
+        <input type="checkbox" id="acepta_compromiso" required style="width:16px; height:16px;">
+        <span>Para constancia de lo anterior, firmo en señal de total aceptación y compromiso legal de las responsabilidades aquí consagradas[cite: 72].</span>
+      </label>
+    </div>
+
+    <div class="spacer" style="height:25px;"></div>
+    <div class="tw">
+      <table style="table-layout: fixed; width: 100%;">
+        <tr>
+          <td class="firma-container" style="width: 50%; border-right: 1px solid var(--gris-m); vertical-align: bottom;">
+            <img id="previewEstudiante" class="preview-firma" alt="Firma Estudiante">
+            <div style="margin: 5px 0;">
+              <input type="file" id="fileEstudiante" accept="image/*" onchange="cargarFirma(event, 'previewEstudiante')" style="font-size:8pt;">
+            </div>
+            <div class="firma-line"></div>
+            <p class="firma-lbl">Firma del Estudiante (Suscripción Digital) [cite: 74]</p>
+          </td>
+          
+          <td class="firma-container" style="width: 50%; vertical-align: bottom; background-color: var(--gris-l);">
+            <div style="height: 50px; display: flex; align-items: center; justify-content: center; color: var(--azul); font-weight: bold; font-style: italic; font-size: 8.5pt; text-align: center;">
+              Radicado y Validado<br>Oficina de Prácticas Profesionales ITM
+            </div>
+            <div class="firma-line"></div>
+            <p class="firma-lbl">Validación Institucional ITM</p>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </form>
+</div>
+
+<script>
+  // Programas académicos oficiales por facultad del ITM
+  const programasPorFacultad = {
+    "Artes": [
+      "Artes Visuales", "Cine", "Artes de la Grabación y Producción Musical",
+      "Tecnología en Informática Musical", "Tecnología en Diseño Industrial", "Ingeniería en Diseño Industrial"
+    ],
+    "Economicas": [
+      "Tecnología en Gestión Administrativa", "Tecnología en Análisis de Costos y Presupuestos",
+      "Tecnología en Calidad", "Tecnología en Producción", "Administración Tecnológica",
+      "Administración del Deporte", "Ingeniería Financiera y de Negocios", "Ingeniería de Producción", "Ingeniería de la Calidad"
+    ],
+    "Exactas": [
+      "Tecnología en Mantenimiento de Equipo Biomédico", "Tecnología en Construcción de Acabados Arquitectónicos",
+      "Ingeniería Biomédica", "Ciencias Ambientales", "Ciencia y Tecnología de los Alimentos", "Física", "Química Industrial"
+    ],
+    "Ingenierias": [
+      "Tecnología en Sistemas de Información", "Tecnología en Telecomunicaciones", "Tecnología en Electrónica",
+      "Tecnología en Sistemas Electromecánicos", "Tecnología en Sistemas de Producción", "Ingeniería de Sistemas",
+      "Ingeniería de Telecomunicaciones", "Ingeniería Electrónica", "Ingeniería Electromecánica", "Interpretación y Traducción Lengua de Señas"
+    ]
+  };
+
+  let base64FirmaEstudiante = "";
+
+  // Capturar datos enviados desde el Dashboard
+const urlParams = new URLSearchParams(window.location.search);
+const ccDesdeDashboard = urlParams.get('cc');
+const nombreDesdeDashboard = urlParams.get('nombre');
+const correoDesdeDashboard = urlParams.get('email');
+
+if (ccDesdeDashboard) {
+  // Auto-llenar campos en el formulario de la página actual
+  if(document.getElementById('documento')) document.getElementById('documento').value = ccDesdeDashboard;
+  if(document.getElementById('nombre')) document.getElementById('nombre').value = nombreDesdeDashboard;
+  if(document.getElementById('correo')) document.getElementById('correo').value = correoDesdeDashboard;
+}
+
+  // Recuperación automática del borrador para revisiones de GitHub Pages
+  window.addEventListener('DOMContentLoaded', () => {
+    
+    // Establecer la fecha de hoy por defecto
+    document.getElementById('fecha_suscripcion').value = new Date().toISOString().split('T')[0];
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const modoRevision = urlParams.get('revisar');
+
+    if (modoRevision === 'true') {
+      const datosGuardados = localStorage.getItem('compromiso_borrador');
+      if (datosGuardados) {
+        const datos = JSON.parse(datosGuardados);
+        
+        document.getElementById('nombre').value = datos.nombre || '';
+        document.getElementById('documento').value = datos.documento || '';
+        document.getElementById('celular').value = datos.celular || '';
+        document.getElementById('correo').value = datos.correo || '';
+        
+        const facSelect = document.getElementById('facultad');
+        for (let i = 0; i < facSelect.options.length; i++) {
+          if (facSelect.options[i].text === datos.facultad) {
+            facSelect.selectedIndex = i;
+            break;
+          }
+        }
+        filtrarProgramas();
+        document.getElementById('programa').value = datos.programa || '';
+
+        if (datos.firmaEstudianteB64) {
+          const imgElem = document.getElementById('previewEstudiante');
+          imgElem.src = datos.firmaEstudianteB64;
+          imgElem.style.display = "block";
+          base64FirmaEstudiante = datos.firmaEstudianteB64;
+        }
+        alert('ℹ️ Se han restaurado tus datos del acta de compromiso anteriores.');
+      }
+    }
+  });
+
+  function filtrarProgramas() {
+    const facultadSeleccionada = document.getElementById('facultad').value;
+    const selectPrograma = document.getElementById('programa');
+    selectPrograma.innerHTML = '';
+
+    if (!facultadSeleccionada) {
+      selectPrograma.innerHTML = '<option value="">-- Seleccione primero la facultad --</option>';
+      return;
+    }
+
+    const opcionPorDefecto = document.createElement('option');
+    opcionPorDefecto.value = "";
+    opcionPorDefecto.textContent = "-- Seleccione programa --";
+    selectPrograma.appendChild(opcionPorDefecto);
+
+    programasPorFacultad[facultadSeleccionada].forEach(prog => {
+      const elOpt = document.createElement('option');
+      elOpt.value = prog;
+      elOpt.textContent = prog;
+      selectPrograma.appendChild(elOpt);
+    });
+  }
+
+  function cargarFirma(event, idPreview) {
+    const archivo = event.target.files[0];
+    if (!archivo) return;
+    const lector = new FileReader();
+    lector.onload = function(e) {
+      const imgElem = document.getElementById(idPreview);
+      imgElem.src = e.target.result;
+      imgElem.style.display = "block";
+      base64FirmaEstudiante = e.target.result;
+    };
+    lector.readAsDataURL(archivo);
+  }
+
+  async function enviarCompromiso() {
+    const form = document.getElementById('compromisoForm');
+    if (!form.checkValidity()) {
+      alert('Por favor complete todos los datos del formulario antes de enviar.');
+      return;
+    }
+    if (!document.getElementById('acepta_compromiso').checked) {
+      alert('Debe aceptar la declaración formal de responsabilidades para continuar.');
+      return;
+    }
+    if (!base64FirmaEstudiante) {
+      alert('Por favor cargue la imagen de su firma manuscrita antes de enviar el compromiso.');
+      return;
+    }
+
+    const datosCompromiso = {
+      nombre: document.getElementById('nombre').value,
+      documento: document.getElementById('documento').value,
+      facultad: document.getElementById('facultad').options[document.getElementById('facultad').selectedIndex].text,
+      programa: document.getElementById('programa').value,
+      celular: document.getElementById('celular').value,
+      correo: document.getElementById('correo').value,
+      fecha_suscripcion: document.getElementById('fecha_suscripcion').value,
+      firmaEstudianteB64: base64FirmaEstudiante
+    };
+
+    // Guardar copia de seguridad local
+    localStorage.setItem('compromiso_borrador', JSON.stringify(datosCompromiso));
+
+    // REEMPLAZAR AQUÍ: Coloca la URL de la petición HTTP POST generada en tu flujo de Power Automate para Compromisos
+    const webhookURL = "https://prod-XX.javascript.logic.azure.com:443/workflows/...";
+
+    try {
+      const response = await fetch(webhookURL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(datosCompromiso)
+      });
+
+      if (response.ok) {
+        alert('🎉 ¡Acta de Compromiso enviada con éxito! Se archivará en tu expediente digital de la Oficina de Prácticas.');
+      } else {
+        alert('Hubo un error al procesar el envío del archivo en la nube.');
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert('Error en la conexión con el servidor de automatización.');
+    }
+  }
+</script>
+</body>
+</html>

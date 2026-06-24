@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portal Unificado de Prácticas | ITM</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.3/babel.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Montserrat', 'sans-serif'], },
+          colors: { itm: { blue: '#102069', light: '#EBF0F6', accent: '#F19800', } }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body { background-color: #EBF0F6; font-family: 'Montserrat', sans-serif; min-height: 100vh; }
+    .glass-card { background: #FFFFFF; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04); border-radius: 1.25rem; border: 1px solid rgba(0,0,0,0.05); }
+    .btn-primary { background-color: #102069; color: white; transition: all 0.3s ease; border-radius: 9999px; }
+    .btn-primary:hover { background-color: #0c1850; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(16, 32, 105, 0.2); }
+    .btn-disabled { background-color: #9ca3af; color: white; cursor: not-allowed; border-radius: 9999px; }
+    .radio-custom:checked + div { border-color: #102069; background-color: #f0f4fc; }
+    .radio-custom:checked + div span { color: #102069; font-weight: 600; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+
+    // ==========================================
+    // ESTRUCTURAS DE DATOS ORIGINALES
+    // ==========================================
+    const N_I_E_DATA = [
+      {
+        id: "CE1", part: "Parte I - Ambiente General", title: "Sucesos de la Vida",
+        instructions: "Remóntese al año pasado. Indique cuánto pesar le causó cada uno de los siguientes aspectos:",
+        options: [{ label: "Mucha", value: 4 }, { label: "Moderada", value: 3 }, { label: "Poca", value: 2 }, { label: "Nada o No ocurrió", value: 1 }],
+        questions: [ 
+          { id: "ce1_q1", text: "1. Despedido, renunció o se jubiló" }, 
+          { id: "ce1_q2", text: "2. Nuevo empleo o compañía" }, 
+          { id: "ce1_q3", text: "3. Nuevo tipo de trabajo" }, 
+          { id: "ce1_q4", text: "4. Reducción o reorganización en la compañía" }, 
+          { id: "ce1_q5", text: "5. Algún otro cambio en el trabajo, no incluido en la lista anterior, que le produjo angustia" },
+          { id: "ce1_q6", text: "6. Pérdida económica o disminución de ingresos" },
+          { id: "ce1_q7", text: "7. Muerte de un amigo intimo o miembro de familia" }, 
+          { id: "ce1_q8", text: "8. Mudanza o traslado" },  
+          { id: "ce1_q9", text: "9. Divorcio o separación" }, 
+          { id: "ce1_q10", text: "10. Su matrimonio" }, 
+          { id: "ce1_q11", text: "11. Compro una nueva casa" }, 
+          { id: "ce1_q12", text: "12. Fue victima de un crimen" }, 
+          { id: "ce1_q13", text: "13. Nacimiento de un hijo, adopción, hijastros u otras personas agregadas al hogar" }, 
+          { id: "ce1_q14", text: "14. Complicación en el sistema judicial" }, 
+          { id: "ce1_q15", text: "15. Seria enfermedad personal o heridas" }, 
+          { id: "ce1_q16", text: "16. Seria enfermedad o lesiones d eun amigo intimo o miembro de la familia" }, 
+          { id: "ce1_q17", text: "17. Aumento de responsabilidades de cuidar de un pariente viejo o inválido" }, 
+          { id: "ce1_q18", text: "18. Cualquier otro cambio no incluido en lista anterior que le produjo angustia" } 
+        ]
+      }
+    ];
+
+    const OPTIONS_PERSONAL = [
+      { value: 1, label: "1. No calificado / Sin experiencia" },
+      { value: 2, label: "2. Estoy aprendiendo esta destreza" },
+      { value: 3, label: "3. Puedo hacerlo con ayuda/supervisión" },
+      { value: 4, label: "4. Me desempeño completamente" },
+      { value: 5, label: "5. Por encima de la media" },
+      { value: 6, label: "6. Sobresaliente en esta área" },
+      { value: 7, label: "7. Soy líder o creador en esta área" }
+    ];
+
+    const OPTIONS_CARGO = [
+      { value: 1, label: "1. No es relevante al trabajo" },
+      { value: 2, label: "2. Raramente se requiere" },
+      { value: 3, label: "3. Algunas veces se requiere" },
+      { value: 4, label: "4. Se utiliza regularmente" },
+      { value: 5, label: "5. Destreza importante" },
+      { value: 6, label: "6. Destreza esencial" },
+      { value: 7, label: "7. Máxima prioridad" }
+    ];
+
+    const DESTREZAS_DATA = [
+      { id: "F1", title: "Factor 1: Empatía", questions: [{ id: "q1_0", text: "1.0 Comprensión e influencia de los sentimientos de los demás: empatía " }, { id: "q1_1", text: "1.1 Ayudar a los otros a tener oportunidades para desarrollar sus capacidades" }] }
+    ];
+
+    const PROGRAMAS_FACULTAD = {
+      "Artes": ["Artes Visuales", "Cine", "Tecnología en Diseño Industrial", "Ingeniería en Diseño Industrial"],
+      "Economicas": ["Tecnología en Gestión Administrativa", "Tecnología en Calidad", "Ingeniería Financiera y de Negocios"],
+      "Exactas": ["Tecnología en Mantenimiento de Equipo Biomédico", "Ingeniería Biomédica"],
+      "Ingenierias": ["Tecnología en Sistemas de Información", "Ingeniería de Sistemas", "Ingeniería Electrónica"]
+    };
+
+    // ==========================================
+    // PANTALLA DE BIENVENIDA / LOGIN
+    // ==========================================
+    function WelcomeScreen({ onStart }) {
+      const [formData, setFormData] = useState({ nombre: '', cc: '', email: '' });
+      const handleSubmit = (e) => { e.preventDefault(); onStart(formData); };
+      
+      return (
+        
+    <div className="flex flex-col items-center justify-center min-h-screen p-4 pb-12">
+          <div className="mb-8 text-center mt-8">
+            <img 
+              src="./LOGO ITM 2020-02.png" 
+              alt="Logo ITM" 
+              className="h-20 md:h-24 mx-auto object-contain"
+              onError={(e) => { e.target.style.display = 'none'; e.target.insertAdjacentHTML('afterend', '<h1 class="text-3xl font-bold text-itm-blue">ITM</h1>'); }}
+            />
+          </div>
+
+          <div className="text-center mb-6 max-w-lg">
+            <h1 className="text-3xl font-extrabold text-itm-blue tracking-tight mb-2">Portal Único de Prácticas</h1>
+            <p className="text-gray-500 font-medium">Oficina de Prácticas Profesionales</p>
+          </div>
+
+          <div className="glass-card max-w-md w-full p-8 relative overflow-hidden">
+            <div className="absolute top-0 left-0 w-full h-1 bg-itm-blue"></div>
+
+            <div className="bg-blue-50/80 border border-blue-100 rounded-lg p-4 mb-8 flex items-center gap-4">
+               <div className="text-itm-blue bg-white p-2 rounded-full shadow-sm">
+                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+               </div>
+               <p className="text-sm text-itm-blue font-medium leading-relaxed">
+                 Para personalizar su experiencia, por favor ingrese sus datos.
+                 Esto nos permitirá guardar su progreso y resultados de manera segura.
+               </p>
+            </div>
+
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div>
+                <label className="block text-sm font-bold text-itm-blue mb-2">Cédula de Ciudadanía (CC)</label>
+                <input required type="number" placeholder="Ej: 1234567890" className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-itm-blue focus:border-itm-blue outline-none transition-colors" value={formData.cc} onChange={e => setFormData({...formData, cc: e.target.value})} />
+              </div>
+              <div>
+                <label className="block text-sm font-bold text-itm-blue mb-2">Nombre Completo</label>
+                <input required type="text" placeholder="Ej: Paola Cortez Restrepo" className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-itm-blue focus:border-itm-blue outline-none transition-colors" value={formData.nombre} onChange={e => setFormData({...formData, nombre: e.target.value})} />
+              </div>
+              <div>
+                <label className="block text-sm font-bold text-itm-blue mb-2">Correo Institucional</label>
+                <input required type="email" placeholder="Ej: usuario@correo.itm.edu.co" className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-itm-blue focus:border-itm-blue outline-none transition-colors" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} />
+              </div>
+              <button type="submit" className="btn-primary w-full py-4 font-bold text-[15px] mt-4 flex justify-center items-center gap-2">
+                ¡Ingresar! <span aria-hidden="true">&rarr;</span>
+              </button>
+            </form>
+          </div>
+        </div>
+       );
+       }
+    // ==========================================
+    // DASHBOARD PRINCIPAL (CUATRO CUADROS)
+    // ==========================================
+    function DashboardLobby({ user, status, onSelectModule, onLogout }) {
+      return (
+        <div className="min-h-screen pb-12 flex flex-col bg-itm-light">
+          <div className="bg-itm-blue w-full px-6 py-5 shadow-md">
+            <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+              <div className="flex items-center gap-4">
+                <img src="/logo itm.jpeg" alt="ITM" className="h-10 md:h-12 object-contain" />
+                <div><h1 className="text-white font-bold text-lg md:text-xl leading-tight">Portal Preprácticas Estudiantes</h1></div>
+              </div>
+              <div className="bg-white/10 px-4 py-2 rounded-lg text-white text-sm flex items-center gap-4">
+                <span>👤 {user.nombre} ({user.cc})</span>
+                <button onClick={onLogout} className="font-bold text-orange-300 hover:text-orange-400 transition-colors">Salir</button>
+              </div>
+            </div>
+          </div>
+
+          <div className="max-w-6xl mx-auto w-full p-4 md:p-8 mt-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              
+              {/* CUADRO 1: PRUEBA IE */}
+              <div className={`bg-white rounded-xl shadow-sm border-2 p-6 flex flex-col justify-between ${status.nieCompleted ? 'border-green-400' : 'border-transparent'}`}>
+                <div>
+                  <div className="flex justify-between items-center mb-3">
+                    <span className="text-xs uppercase font-bold tracking-wider text-gray-400">Módulo 1</span>
+                    {status.nieCompleted && <span className="text-xs bg-green-100 text-green-700 px-2.5 py-1 rounded-full font-bold">✓ Completado</span>}
+                  </div>
+                  <h3 className="text-lg font-bold text-itm-blue mb-2">Prueba de Inteligencia Emocional (IE)</h3>
+                  <p className="text-gray-500 text-sm mb-4">Mide tu manejo de presiones en el entorno laboral, salud general y competencias relacionales.</p>
+                </div>
+                <button onClick={() => onSelectModule('nie')} className="w-full py-3 rounded-lg font-bold bg-itm-blue text-white hover:bg-opacity-90 transition-all">
+                  {status.nieCompleted ? 'Revisar / Modificar' : 'Iniciar Evaluación'}
+                </button>
+              </div>
+
+              {/* CUADRO 2: PRUEBA DESTREZAS */}
+              <div className={`bg-white rounded-xl shadow-sm border-2 p-6 flex flex-col justify-between ${status.desCompleted ? 'border-green-400' : 'border-transparent'}`}>
+                <div>
+                  <div className="flex justify-between items-center mb-3">
+                    <span className="text-xs uppercase font-bold tracking-wider text-gray-400">Módulo 2</span>
+                    {status.desCompleted && <span className="text-xs bg-green-100 text-green-700 px-2.5 py-1 rounded-full font-bold">✓ Completado</span>}
+                  </div>
+                  <h3 className="text-lg font-bold text-itm-blue mb-2">Prueba de Destrezas Personales</h3>
+                  <p className="text-gray-500 text-sm mb-4">Autoevaluación dual de factores de empatía, liderazgo y competencias analíticas institucionales.</p>
+                </div>
+                <button onClick={() => onSelectModule('destrezas')} className="w-full py-3 rounded-lg font-bold bg-itm-accent text-white hover:bg-opacity-90 transition-all">
+                  {status.desCompleted ? 'Revisar / Modificar' : 'Iniciar Perfilamiento'}
+                </button>
+              </div>
+
+              {/* CUADRO 3: HOJA DE VIDA (HV) */}
+              <div className={`bg-white rounded-xl shadow-sm border-2 p-6 flex flex-col justify-between ${status.hvCompleted ? 'border-green-400' : 'border-transparent'}`}>
+                <div>
+                  <div className="flex justify-between items-center mb-3">
+                    <span className="text-xs uppercase font-bold tracking-wider text-gray-400">Módulo 3</span>
+                    {status.hvCompleted && <span className="text-xs bg-green-100 text-green-700 px-2.5 py-1 rounded-full font-bold">✓ Completado</span>}
+                  </div>
+                  <h3 className="text-lg font-bold text-itm-blue mb-2">Formato de Hoja de Vida Estudiantil</h3>
+                  <p className="text-gray-500 text-sm mb-4">Configura tu perfil profesional, formación complementaria, idiomas y referencias válidas para contratación.</p>
+                </div>
+                <button onClick={() => onSelectModule('hv')} className="w-full py-3 rounded-lg font-bold bg-gray-800 text-white hover:bg-opacity-90 transition-all">
+                  {status.hvCompleted ? 'Editar Hoja de Vida' : 'Diligenciar Formato'}
+                </button>
+              </div>
+
+              {/* CUADRO 4: COMPROMISO */}
+              <div className={`bg-white rounded-xl shadow-sm border-2 p-6 flex flex-col justify-between ${status.compromisoCompleted ? 'border-green-400' : 'border-transparent'}`}>
+                <div>
+                  <div className="flex justify-between items-center mb-3">
+                    <span className="text-xs uppercase font-bold tracking-wider text-gray-400">Módulo 4</span>
+                    {status.compromisoCompleted && <span className="text-xs bg-green-100 text-green-700 px-2.5 py-1 rounded-full font-bold">✓ Completado</span>}
+                  </div>
+                  <h3 className="text-lg font-bold text-itm-blue mb-2">Acta de Compromiso de Prácticas</h3>
+                  <p className="text-gray-500 text-sm mb-4">Declaración jurada formal de responsabilidades legales, reglamentos y aceptación de lineamientos institucionales.</p>
+                </div>
+                <button onClick={() => onSelectModule('compromiso')} className="w-full py-3 rounded-lg font-bold bg-teal-700 text-white hover:bg-opacity-90 transition-all">
+                  {status.compromisoCompleted ? 'Ver Acta Suscrita' : 'Firmar Acta de Compromiso'}
+                </button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // ==========================================
+    // INTERFAZ DE FORMULARIO: HOJA DE VIDA (HV)
+    // ==========================================
+    function FormHV({ savedData, onSave, onBack }) {
+      const [form, setForm] = useState({
+        direccion: '', celular: '', facultad: '', programa: '', semestre: '',
+        idioma1: 'Español - Nativo', idioma2: '', competencias: '', areas: '', aptitudes: '',
+        ref_per_nombre: '', ref_per_telefono: '', ref_fam_nombre: '', ref_fam_telefono: '',
+        ...savedData
+      });
+
+      useEffect(() => { onSave(form, false); }, [form]);
+
+      return (
+        <div className="max-w-4xl mx-auto my-8 p-6 bg-white rounded-xl shadow-md">
+          <div className="flex justify-between items-center border-b pb-4 mb-6">
+            <h2 className="text-2xl font-bold text-itm-blue">Formato Único de Hoja de Vida Estudiantil</h2>
+            <button onClick={onBack} className="text-sm font-semibold text-red-500 hover:underline">Volver al Dashboard</button>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 space-y-2">
+            <div>
+              <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Dirección de Residencia</label>
+              <input type="text" className="w-full p-2.5 border rounded-lg" value={form.direccion} onChange={e => setForm({...form, direccion: e.target.value})} />
+            </div>
+            <div>
+              <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Celular de Contacto</label>
+              <input type="text" className="w-full p-2.5 border rounded-lg" value={form.celular} onChange={e => setForm({...form, celular: e.target.value})} />
+            </div>
+            <div>
+              <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Facultad</label>
+              <select className="w-full p-2.5 border rounded-lg" value={form.facultad} onChange={e => setForm({...form, facultad: e.target.value, programa: ''})}>
+                <option value="">-- Seleccione --</option>
+                {Object.keys(PROGRAMAS_FACULTAD).map(f => <option key={f} value={f}>{f}</option>)}
+              </select>
+            </div>
+            <div>
+              <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Programa Académico</label>
+              <select className="w-full p-2.5 border rounded-lg" value={form.programa} onChange={e => setForm({...form, programa: e.target.value})}>
+                <option value="">-- Seleccione --</option>
+                {form.facultad && PROGRAMAS_FACULTAD[form.facultad].map(p => <option key={p} value={p}>{p}</option>)}
+              </select>
+            </div>
+            <div className="md:col-span-2">
+              <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Perfil y Competencias Ofimáticas</label>
+              <textarea className="w-full p-2.5 border rounded-lg h-24" placeholder="Describa herramientas de software, lenguajes o competencias..." value={form.competencias} onChange={e => setForm({...form, competencias: e.target.value})} />
+            </div>
+            <div>
+              <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Referencia Personal (Nombre)</label>
+              <input type="text" className="w-full p-2.5 border rounded-lg" value={form.ref_per_nombre} onChange={e => setForm({...form, ref_per_nombre: e.target.value})} />
+            </div>
+            <div>
+              <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Referencia Personal (Teléfono)</label>
+              <input type="text" className="w-full p-2.5 border rounded-lg" value={form.ref_per_telefono} onChange={e => setForm({...form, ref_per_telefono: e.target.value})} />
+            </div>
+          </div>
+          <div className="mt-8 pt-4 border-t flex justify-end">
+            <button onClick={() => onSave(form, true)} className="px-6 py-3 bg-green-600 text-white font-bold rounded-lg hover:bg-green-700">
+              Guardar y Finalizar Módulo
+            </button>
+          </div>
+        </div>
+      );
+    }
+
+    // ==========================================
+    // INTERFAZ DE FORMULARIO: ACTA DE COMPROMISO
+    // ==========================================
+    function FormCompromiso({ savedData, onSave, onBack }) {
+      const [acepta, setAcepta] = useState(savedData.acepta || false);
+
+      return (
+        <div className="max-w-4xl mx-auto my-8 p-6 bg-white rounded-xl shadow-md">
+          <div className="flex justify-between items-center border-b pb-4 mb-6">
+            <h2 className="text-2xl font-bold text-itm-blue">Acta de Compromiso de Responsabilidades</h2>
+            <button onClick={onBack} className="text-sm font-semibold text-red-500 hover:underline">Volver al Dashboard</button>
+          </div>
+          <div className="bg-gray-50 p-4 rounded-lg text-sm text-gray-700 border mb-6 space-y-3 text-justify">
+            <p><strong>1.</strong> Conocer y acatar a cabalidad el reglamento estudiantil vigente y las pautas estipuladas en el Manual de Prácticas Profesionales.</p>
+            <p><strong>2.</strong> Realizar y aprobar en su totalidad la formación pedagógica obligatoria de pre-prácticas antes de la postulación empresarial.</p>
+            <p><strong>3.</strong> Asistir con puntualidad y alta responsabilidad corporativa a las entrevistas de selección pactadas con las organizaciones.</p>
+            <p><strong>4.</strong> Mantener la condición de matrícula activa durante toda la vigencia del contrato de aprendizaje o convenio.</p>
+          </div>
+          <label className="flex items-center gap-3 p-4 bg-blue-50 border rounded-lg cursor-pointer">
+            <input type="checkbox" className="w-5 h-5" checked={acepta} onChange={e => {
+              setAcepta(e.target.checked);
+              onSave({ acepta: e.target.checked }, false);
+            }} />
+            <span className="text-sm font-bold text-itm-blue">Acepto voluntariamente y firmo en señal de total compromiso legal las responsabilidades consagradas.</span>
+          </label>
+          <div className="mt-8 pt-4 border-t flex justify-end">
+            <button onClick={() => onSave({ acepta: acepta }, true)} disabled={!acepta} className={`px-6 py-3 font-bold rounded-lg text-white ${acepta ? 'bg-teal-700 hover:bg-teal-800' : 'bg-gray-400 cursor-not-allowed'}`}>
+              Formalizar Suscripción Digital del Acta
+            </button>
+          </div>
+        </div>
+      );
+    }
+// ==========================================
+    // CONTROLADOR PRINCIPAL ACTUALIZADO (APP)
+    // ==========================================
+    function App() {
+      const [user, setUser] = useState(() => JSON.parse(localStorage.getItem('unif_user')) || null);
+      const [screen, setScreen] = useState('welcome');
+      const [status, setStatus] = useState({
+        nieCompleted: false, desCompleted: false, hvCompleted: false, compromisoCompleted: false
+      });
+
+      // Cargar estado de progreso del estudiante actual
+      useEffect(() => {
+        if (user) {
+          const keyStatus = `itm_status_${user.cc}`;
+          const savedStatus = JSON.parse(localStorage.getItem(keyStatus));
+          if (savedStatus) {
+            setStatus(savedStatus);
+          }
+          setScreen('lobby');
+        } else {
+          setScreen('welcome');
+        }
+      }, [user]);
+
+      const handleStart = (userData) => {
+        localStorage.setItem('unif_user', JSON.stringify(userData));
+        setUser(userData);
+      };
+       
+      const handleLogout = () => {
+        if(window.confirm("¿Estás seguro de que deseas salir?")) {
+          // Limpiar la sesión activa del usuario
+          localStorage.removeItem('unif_user');
+          setUser(null);
+          
+          // Forzar la recarga limpia de la página para pintar el formulario de ingreso
+          window.location.href = 'dashboard.html';
+        }
+      };
+      
+
+      // Función que gestiona la navegación externa hacia las páginas correspondientes
+      const handleNavigation = (targetModule) => {
+        // Creamos los parámetros de la URL para compartirlos con los otros archivos .html
+        const params = new URLSearchParams({
+          cc: user.cc,
+          nombre: user.nombre,
+          email: user.email,
+          fromDashboard: 'true'
+        }).toString();
+
+        if (targetModule === 'nie') {
+          // Si en tu "index.html" manejas múltiples vistas, le pasamos que inicie en el test_nie
+          window.location.href = `index.html?${params}&initTest=nie`;
+        } 
+        else if (targetModule === 'destrezas') {
+          window.location.href = `index.html?${params}&initTest=destrezas`;
+        } 
+        else if (targetModule === 'hv') {
+          window.location.href = `hv.html?${params}&revisar=true`;
+        } 
+        else if (targetModule === 'compromiso') {
+          window.location.href = `compromiso.html?${params}&revisar=true`;
+        }
+      };
+
+      return (
+        <div>
+          {screen === 'welcome' && <WelcomeScreen onStart={handleStart} />}
+          
+          {screen === 'lobby' && (
+            <DashboardLobby 
+              user={user} 
+              status={status} 
+              onSelectModule={handleNavigation} 
+              onLogout={handleLogout} 
+            />
+          )}
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body>
+</html>
