@@ -565,17 +565,19 @@
     // ==========================================
     // COMPONENTE 3: MOTOR TEST N.I.E. CON AUTO-GUARDADO
     // ==========================================
-    function TestScreen({ onFinish, onBackLobby }) {
+    function TestScreen({ onFinish, onBackLobby, user }) {
+      const itm_nie_idx_by_user = `itm_nie_idx_${user.cc}`
+      const itm_nie_answers_by_user = `itm_nie_answers_${user.cc}`
       const [currentSectionIdx, setCurrentSectionIdx] = useState(() => {
-        return parseInt(localStorage.getItem('itm_nie_idx')) || 0;
+        return parseInt(localStorage.getItem(itm_nie_idx_by_user)) || 0;
       });
       const [answers, setAnswers] = useState(() => {
-        const saved = localStorage.getItem('itm_nie_answers');
+        const saved = localStorage.getItem(itm_nie_answers_by_user);
         return saved ? JSON.parse(saved) : {};
       });
       
-      useEffect(() => { localStorage.setItem('itm_nie_idx', currentSectionIdx.toString()); }, [currentSectionIdx]);
-      useEffect(() => { localStorage.setItem('itm_nie_answers', JSON.stringify(answers)); }, [answers]);
+      useEffect(() => { localStorage.setItem(itm_nie_idx_by_user, currentSectionIdx.toString()); }, [currentSectionIdx]);
+      useEffect(() => { localStorage.setItem(itm_nie_answers_by_user, JSON.stringify(answers)); }, [answers]);
 
       const section = N_I_E_DATA[currentSectionIdx];
       const handleAnswer = (questionId, value) => setAnswers(prev => ({ ...prev, [questionId]: value }));
@@ -739,8 +741,7 @@
     // ==========================================
     function App() {
       const urlParams = new URLSearchParams(window.location.search);
-      const testDesdeUrl = urlParams.get('test');
-
+      const testDesdeUrl = urlParams.get('initTest');
       const [user, setUser] = useState(null);
       
       const [screen, setScreen] = useState(() => {
@@ -1031,7 +1032,7 @@
             <LobbyScreen user={user} nieCompleted={nieCompleted} destrezasCompleted={destrezasCompleted} onLogout={handleLogout} onSelectTest={(testName) => { setSubmitSuccess(false); setScreen(testName === 'nie' ? 'test_nie' : 'test_destrezas'); window.scrollTo(0,0); }} />
           )}
 
-          {screen === 'test_nie' && <TestScreen onFinish={processResultsNIE} onBackLobby={() => setScreen('lobby')} />}
+          {screen === 'test_nie' && <TestScreen user={user} onFinish={processResultsNIE} onBackLobby={() => setScreen('lobby')} />}
           
           {screen === 'results_nie' && (
             <div className="flex-1 w-full flex flex-col bg-itm-light min-h-screen pb-12">

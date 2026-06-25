@@ -143,7 +143,7 @@
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
                 <label className="block text-sm font-bold text-itm-blue mb-2">Cédula de Ciudadanía (CC)</label>
-                <input required type="number" placeholder="Ej: 1234567890" className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-itm-blue focus:border-itm-blue outline-none transition-colors" value={formData.cc} onChange={e => setFormData({...formData, cc: e.target.value})} />
+                <input required type="text" placeholder="Ej: 1234567890" className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-itm-blue focus:border-itm-blue outline-none transition-colors" value={formData.cc} onChange={e => setFormData({...formData, cc: e.target.value})} />
               </div>
               <div>
                 <label className="block text-sm font-bold text-itm-blue mb-2">Nombre Completo</label>
