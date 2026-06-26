@@ -650,17 +650,20 @@
     // ==========================================
     // COMPONENTE 4: MOTOR TEST DESTREZAS CON AUTO-GUARDADO
     // ==========================================
-    function TestDestrezasScreen({ onFinish, onBackLobby }) {
+    function TestDestrezasScreen({ onFinish, onBackLobby, user }) {
+      const itm_des_idx_by_user = `itm_des_idx_${user.cc}`
+      const itm_des_answers_by_user = `itm_des_answers_${user.cc}`
       const [currentSectionIdx, setCurrentSectionIdx] = useState(() => {
-        return parseInt(localStorage.getItem('itm_des_idx')) || 0;
+        
+        return parseInt(localStorage.getItem(itm_des_idx_by_user)) || 0;
       });
       const [answers, setAnswers] = useState(() => {
-        const saved = localStorage.getItem('itm_des_answers');
+        const saved = localStorage.getItem(itm_des_answers_by_user);
         return saved ? JSON.parse(saved) : {};
       });
 
-      useEffect(() => { localStorage.setItem('itm_des_idx', currentSectionIdx.toString()); }, [currentSectionIdx]);
-      useEffect(() => { localStorage.setItem('itm_des_answers', JSON.stringify(answers)); }, [answers]);
+      useEffect(() => { localStorage.setItem(itm_des_idx_by_user, currentSectionIdx.toString()); }, [currentSectionIdx]);
+      useEffect(() => { localStorage.setItem(itm_des_answers_by_user, JSON.stringify(answers)); }, [answers]);
       
       const section = DESTREZAS_DATA[currentSectionIdx];
       const handleAnswer = (questionId, type, value) => {
@@ -1089,7 +1092,7 @@
             </div>
           )}
 
-          {screen === 'test_destrezas' && <TestDestrezasScreen onFinish={processResultsDestrezas} onBackLobby={() => setScreen('lobby')} />}
+          {screen === 'test_destrezas' && <TestDestrezasScreen user={user} onFinish={processResultsDestrezas} onBackLobby={() => setScreen('lobby')} />}
           
           {screen === 'results_destrezas' && (
             <div className="flex-1 w-full flex flex-col bg-itm-light min-h-screen pb-12">
