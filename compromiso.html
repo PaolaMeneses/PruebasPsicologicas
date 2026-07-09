@@ -104,6 +104,11 @@
     font-weight: bold;
   }
 
+  .legal-item, tr, .firma-container {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
   label.chk { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; font-weight: bold; color: var(--azul); }
   
   .firma-lbl { font-size: 7.5pt; color: #555; margin-top: 5px; font-weight: bold; }
@@ -400,13 +405,16 @@ if (ccDesdeDashboard) {
   localStorage.setItem('compromiso_borrador', JSON.stringify(datosCompromiso));
 
   // Configuración del PDF
+ // Configuración del PDF
   const elemento = document.getElementById('compromiso-container');
   const opciones = {
-    margin: [10, 0, 10, 0], // Márgenes superior, derecho, inferior, izquierdo
+    margin: [2, 0, 10, 0], 
     filename: `Compromiso_${datosCompromiso.documento}_${datosCompromiso.nombre}.pdf`,
     image: { type: 'jpeg', quality: 0.98 },
     html2canvas: { scale: 2, useCORS: true },
-    jsPDF: { unit: 'mm', format: 'letter', orientation: 'portrait' }
+    jsPDF: { unit: 'mm', format: 'letter', orientation: 'portrait' },
+    // ESTA ES LA LÍNEA NUEVA: Le dice qué elementos no debe cortar por la mitad
+    pagebreak: { mode: ['css', 'legacy'], avoid: ['.legal-item', 'tr', '.sec-title', '.firma-container'] }
   };
 
   try {
@@ -443,6 +451,7 @@ if (ccDesdeDashboard) {
     document.querySelector('.btn-actions').style.display = 'flex'; // Restaurar botones en caso de error
   }
 }
+
 
 </script>
 </body>
