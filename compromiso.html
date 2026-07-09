@@ -129,6 +129,7 @@
     @page { size: letter; margin: 10mm 12mm; }
   }
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 <body>
 
@@ -367,54 +368,82 @@ if (ccDesdeDashboard) {
   }
 
   async function enviarCompromiso() {
-    const form = document.getElementById('compromisoForm');
-    if (!form.checkValidity()) {
-      alert('Por favor complete todos los datos del formulario antes de enviar.');
-      return;
-    }
-    if (!document.getElementById('acepta_compromiso').checked) {
-      alert('Debe aceptar la declaración formal de responsabilidades para continuar.');
-      return;
-    }
-    if (!base64FirmaEstudiante) {
-      alert('Por favor cargue la imagen de su firma manuscrita antes de enviar el compromiso.');
-      return;
-    }
-
-    const datosCompromiso = {
-      nombre: document.getElementById('nombre').value,
-      documento: document.getElementById('documento').value,
-      facultad: document.getElementById('facultad').options[document.getElementById('facultad').selectedIndex].text,
-      programa: document.getElementById('programa').value,
-      celular: document.getElementById('celular').value,
-      correo: document.getElementById('correo').value,
-      fecha_suscripcion: document.getElementById('fecha_suscripcion').value,
-      firmaEstudianteB64: base64FirmaEstudiante
-    };
-
-    // Guardar copia de seguridad local
-    localStorage.setItem('compromiso_borrador', JSON.stringify(datosCompromiso));
-
-    // REEMPLAZAR AQUÍ: Coloca la URL de la petición HTTP POST generada en tu flujo de Power Automate para Compromisos
-    const webhookURL = "https://prod-XX.javascript.logic.azure.com:443/workflows/...";
-
-    try {
-      const response = await fetch(webhookURL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(datosCompromiso)
-      });
-
-      if (response.ok) {
-        alert('🎉 ¡Acta de Compromiso enviada con éxito! Se archivará en tu expediente digital de la Oficina de Prácticas.');
-      } else {
-        alert('Hubo un error al procesar el envío del archivo en la nube.');
-      }
-    } catch (error) {
-      console.error("Error:", error);
-      alert('Error en la conexión con el servidor de automatización.');
-    }
+  const form = document.getElementById('compromisoForm');
+  if (!form.checkValidity()) {
+    alert('Por favor complete todos los datos del formulario antes de enviar.');
+    return;
   }
+  if (!document.getElementById('acepta_compromiso').checked) {
+    alert('Debe aceptar la declaración formal de responsabilidades para continuar.');
+    return;
+  }
+  if (!base64FirmaEstudiante) {
+    alert('Por favor cargue la imagen de su firma manuscrita antes de enviar el compromiso.');
+    return;
+  }
+
+  // Ocultar botones temporalmente para que no salgan en el PDF
+  document.querySelector('.btn-actions').style.display = 'none';
+
+  const datosCompromiso = {
+    nombre: document.getElementById('nombre').value,
+    documento: document.getElementById('documento').value,
+    facultad: document.getElementById('facultad').options[document.getElementById('facultad').selectedIndex].text,
+    programa: document.getElementById('programa').value,
+    celular: document.getElementById('celular').value,
+    correo: document.getElementById('correo').value,
+    fecha_suscripcion: document.getElementById('fecha_suscripcion').value,
+    firmaEstudianteB64: base64FirmaEstudiante
+  };
+
+  // Guardar borrador
+  localStorage.setItem('compromiso_borrador', JSON.stringify(datosCompromiso));
+
+  // Configuración del PDF
+  const elemento = document.getElementById('compromiso-container');
+  const opciones = {
+    margin: [10, 0, 10, 0], // Márgenes superior, derecho, inferior, izquierdo
+    filename: `Compromiso_${datosCompromiso.documento}_${datosCompromiso.nombre}.pdf`,
+    image: { type: 'jpeg', quality: 0.98 },
+    html2canvas: { scale: 2, useCORS: true },
+    jsPDF: { unit: 'mm', format: 'letter', orientation: 'portrait' }
+  };
+
+  try {
+    // Generar el PDF y obtenerlo como cadena Base64
+    const pdfAsString = await html2pdf().set(opciones).from(elemento).outputPdf('datauristring');
+    
+    // Restaurar botones
+    document.querySelector('.btn-actions').style.display = 'flex';
+
+    // Limpiar el string para Power Automate (quitar "data:application/pdf;base64,")
+    const base64Puro = pdfAsString.split(',')[1];
+    
+    // Agregar el PDF al paquete de datos
+    datosCompromiso.pdfBase64 = base64Puro;
+
+    // URL de Power Automate
+    const webhookURL = "https://default069ff609ffcd494196eaf58efbb15a.37.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/75f3cae6c64e467ba6053560b3149e40/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=GFPXaWL1IWCJkFTy0japmFZVc8a3OaKr6-49nOa4KJo";
+
+    // Enviar a Power Automate
+    const response = await fetch(webhookURL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(datosCompromiso)
+    });
+
+    if (response.ok) {
+      alert('🎉 ¡Acta de Compromiso y PDF enviados con éxito! Se archivará en tu expediente digital.');
+    } else {
+      alert('Hubo un error al procesar el envío del archivo en la nube.');
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    alert('Error en la generación del PDF o en la conexión.');
+    document.querySelector('.btn-actions').style.display = 'flex'; // Restaurar botones en caso de error
+  }
+}
+
 </script>
 </body>
 </html>
