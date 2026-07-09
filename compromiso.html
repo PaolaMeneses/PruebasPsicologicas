@@ -446,11 +446,17 @@ if (ccDesdeDashboard) {
     } else {
       alert('Hubo un error al procesar el envío del archivo en la nube.');
     }
+
+    //2. Redirigir al estudiante al dashboard principal
+      window.location.href = "dashboard.html";
   } catch (error) {
     console.error("Error:", error);
     alert('Error en la generación del PDF o en la conexión.');
     document.querySelector('.btn-actions').style.display = 'flex'; // Restaurar botones en caso de error
   }
+  
+
+  
 }
 
 
