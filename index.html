@@ -1,16 +1,17 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Portal de Evaluaciones | Prácticas ITM</title>
-  
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.3/babel.min.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
 
-  
+
   <script>
     tailwind.config = {
       theme: {
@@ -23,15 +24,51 @@
   </script>
 
   <style>
-    body { background-color: #EBF0F6; font-family: 'Montserrat', sans-serif; min-height: 100vh; }
-    .glass-card { background: #FFFFFF; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04); border-radius: 1.25rem; border: 1px solid rgba(0,0,0,0.05); }
-    .btn-primary { background-color: #102069; color: white; transition: all 0.3s ease; border-radius: 9999px; }
-    .btn-primary:hover { background-color: #0c1850; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(16, 32, 105, 0.2); }
-    .btn-disabled { background-color: #9ca3af; color: white; cursor: not-allowed; border-radius: 9999px; }
-    .radio-custom:checked + div { border-color: #102069; background-color: #f0f4fc; }
-    .radio-custom:checked + div span { color: #102069; font-weight: 600; }
+    body {
+      background-color: #EBF0F6;
+      font-family: 'Montserrat', sans-serif;
+      min-height: 100vh;
+    }
+
+    .glass-card {
+      background: #FFFFFF;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
+      border-radius: 1.25rem;
+      border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .btn-primary {
+      background-color: #102069;
+      color: white;
+      transition: all 0.3s ease;
+      border-radius: 9999px;
+    }
+
+    .btn-primary:hover {
+      background-color: #0c1850;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(16, 32, 105, 0.2);
+    }
+
+    .btn-disabled {
+      background-color: #9ca3af;
+      color: white;
+      cursor: not-allowed;
+      border-radius: 9999px;
+    }
+
+    .radio-custom:checked+div {
+      border-color: #102069;
+      background-color: #f0f4fc;
+    }
+
+    .radio-custom:checked+div span {
+      color: #102069;
+      font-weight: 600;
+    }
   </style>
 </head>
+
 <body>
   <div id="root"></div>
 
@@ -46,88 +83,88 @@
         id: "CE1", part: "Parte I - Ambiente General", title: "Sucesos de la Vida",
         instructions: "Remóntese al año pasado. Indique cuánto pesar le causó cada uno de los siguientes aspectos:",
         options: [{ label: "Mucha", value: 4 }, { label: "Moderada", value: 3 }, { label: "Poca", value: 2 }, { label: "Nada o No ocurrió", value: 1 }],
-        questions: [ { id: "ce1_q1", text: "1. Despedido, renunció o se jubiló" }, 
-        { id: "ce1_q2", text: "2. Nuevo empleo o compañía" }, 
-        { id: "ce1_q3", text: "3. Nuevo tipo de trabajo" }, 
-        { id: "ce1_q4", text: "4. Reducción o reorganización en la compañía" }, 
+        questions: [{ id: "ce1_q1", text: "1. Despedido, renunció o se jubiló" },
+        { id: "ce1_q2", text: "2. Nuevo empleo o compañía" },
+        { id: "ce1_q3", text: "3. Nuevo tipo de trabajo" },
+        { id: "ce1_q4", text: "4. Reducción o reorganización en la compañía" },
         { id: "ce1_q5", text: "5. Algún otro cambio en el trabajo, no incluido en la lista anterior, que le produjo angustia" },
         { id: "ce1_q6", text: "6. Pérdida económica o disminución de ingresos" },
-         { id: "ce1_q7", text: "7. Muerte de un amigo intimo o miembro de familia" }, 
-         { id: "ce1_q8", text: "8. Mudanza o traslado" },  
-         { id: "ce1_q9", text: "9. Divorcio o separación" }, 
-         { id: "ce1_q10", text: "10. Su matrimonio" }, 
-         { id: "ce1_q11", text: "11. Compro una nueva casa" }, 
-         { id: "ce1_q12", text: "12. Fue victima de un crimen" }, 
-         { id: "ce1_q13", text: "13. Nacimiento de un hijo, adopción, hijastros u otras personas agregadas al hogar" }, 
-         { id: "ce1_q14", text: "14. Complicación en el sistema judicial" }, 
-         { id: "ce1_q15", text: "15. Seria enfermedad personal o heridas" }, 
-         { id: "ce1_q16", text: "16. Seria enfermedad o lesiones d eun amigo intimo o miembro de la familia" }, 
-         { id: "ce1_q17", text: "17. Aumento de responsabilidades de cuidar de un pariente viejo o inválido" }, 
-         { id: "ce1_q18", text: "18. Cualquier otro cambio no incluido en lista anterior que le produjo angustia" } ]
+        { id: "ce1_q7", text: "7. Muerte de un amigo intimo o miembro de familia" },
+        { id: "ce1_q8", text: "8. Mudanza o traslado" },
+        { id: "ce1_q9", text: "9. Divorcio o separación" },
+        { id: "ce1_q10", text: "10. Su matrimonio" },
+        { id: "ce1_q11", text: "11. Compro una nueva casa" },
+        { id: "ce1_q12", text: "12. Fue victima de un crimen" },
+        { id: "ce1_q13", text: "13. Nacimiento de un hijo, adopción, hijastros u otras personas agregadas al hogar" },
+        { id: "ce1_q14", text: "14. Complicación en el sistema judicial" },
+        { id: "ce1_q15", text: "15. Seria enfermedad personal o heridas" },
+        { id: "ce1_q16", text: "16. Seria enfermedad o lesiones d eun amigo intimo o miembro de la familia" },
+        { id: "ce1_q17", text: "17. Aumento de responsabilidades de cuidar de un pariente viejo o inválido" },
+        { id: "ce1_q18", text: "18. Cualquier otro cambio no incluido en lista anterior que le produjo angustia" }]
       },
       {
         id: "CE2", part: "Parte I - Ambiente General", title: "Presiones del Trabajo",
         instructions: "Remóntese al año pasado. Indique cuánto pesar le causó cada una de las presiones de trabajo:",
         options: [{ label: "Mucha", value: 4 }, { label: "Moderada", value: 3 }, { label: "Poca", value: 2 }, { label: "Nada o No ocurrió", value: 1 }],
-        questions: [ { id: "ce2_q1", text: "1. Seguridad del empleo" }, 
-        { id: "ce2_q2", text: "2. Relaciones con el jefe inmediato" }, 
-        { id: "ce2_q3", text: "3. Cambio de prioridades en el trabajo" }, 
-        { id: "ce2_q4", text: "4. Relaciones con compañeros de trabajo" }, 
-        { id: "ce2_q5", text: "5. Oportunidad de avanzar y desarrollarse" }, 
-        { id: "ce2_q6", text: "6. Exceso de trabajo" }, 
-        { id: "ce2_q7", text: "7. Control de la carga de trabajo" }, 
+        questions: [{ id: "ce2_q1", text: "1. Seguridad del empleo" },
+        { id: "ce2_q2", text: "2. Relaciones con el jefe inmediato" },
+        { id: "ce2_q3", text: "3. Cambio de prioridades en el trabajo" },
+        { id: "ce2_q4", text: "4. Relaciones con compañeros de trabajo" },
+        { id: "ce2_q5", text: "5. Oportunidad de avanzar y desarrollarse" },
+        { id: "ce2_q6", text: "6. Exceso de trabajo" },
+        { id: "ce2_q7", text: "7. Control de la carga de trabajo" },
         { id: "ce2_q8", text: "8. Falta de flexibilidad para hacer frente a emergencias familiares" },
-         { id: "ce2_q9", text: "9. Favoritismo o injusticia en políticas de contratación" }, 
-         { id: "ce2_q10", text: "10. Constante vigilancia de su desempeño en el oficio" }, 
-         { id: "ce2_q11", text: "11. Trabajo aburrido o poco interesante" }, 
-         { id: "ce2_q12", text: "12. Especial reconocimiento o premio de su oficio" }, 
-         { id: "ce2_q13", text: "13. Presión por conflicto de fechas limites en su oficio" }, 
-         { id: "ce2_q14", text: "14. Perdida de devoción al trabajo" },
-          { id: "ce2_q15", text: "15. Se siente apasionado en el papeleo e incapaz de realizar cosa alguna" },
-           { id: "ce2_q16", text: "16. Flexibilidad de horas de trabajo" }, 
-           { id: "ce2_q17", text: "17. El transporte de ida y regreso al trabajo" } ]
+        { id: "ce2_q9", text: "9. Favoritismo o injusticia en políticas de contratación" },
+        { id: "ce2_q10", text: "10. Constante vigilancia de su desempeño en el oficio" },
+        { id: "ce2_q11", text: "11. Trabajo aburrido o poco interesante" },
+        { id: "ce2_q12", text: "12. Especial reconocimiento o premio de su oficio" },
+        { id: "ce2_q13", text: "13. Presión por conflicto de fechas limites en su oficio" },
+        { id: "ce2_q14", text: "14. Perdida de devoción al trabajo" },
+        { id: "ce2_q15", text: "15. Se siente apasionado en el papeleo e incapaz de realizar cosa alguna" },
+        { id: "ce2_q16", text: "16. Flexibilidad de horas de trabajo" },
+        { id: "ce2_q17", text: "17. El transporte de ida y regreso al trabajo" }]
       },
       {
         id: "CE3", part: "Parte I - Ambiente General", title: "Presiones Personales",
         instructions: "Remóntese al año pasado. Indique cuánto pesar le causó cada una de las presiones personales:",
         options: [{ label: "Mucha", value: 4 }, { label: "Moderada", value: 3 }, { label: "Poca", value: 2 }, { label: "Nada o No ocurrió", value: 1 }],
-        questions: [ { id: "ce3_q1", text: "1. Dificultades financieras" }, 
+        questions: [{ id: "ce3_q1", text: "1. Dificultades financieras" },
         { id: "ce3_q2", text: "2. Desavenencias con socio o cónyuge" }, { id: "ce3_q3", text: "3. Crianza de un hijo" },
-         { id: "ce3_q4", text: "4. Estar separado del marido o la esposa" }, 
-         { id: "ce3_q5", text: "5. Deterioro de la salud personal" },
-          { id: "ce3_q6", text: "6. Encontrar quién cuide del niño o problemas con la actual situación de dicho cuidado" }, 
-          { id: "ce3_q7", text: "7. No tiene tiempo suficiente para los más cercanos" }, 
-          { id: "ce3_q8", text: "8. Vecindario peligroso o no seguro" }, 
-         { id: "ce3_q9", text: "9. Relaciones con un pariente intimo (padres, hermanos, yernos)" },
-          { id: "ce3_q10", text: "10. Conflicto sexual o frustración" },
-          { id: "ce3_q11", text: "11. Conflicto trabajo-familia" },
-          { id: "ce3_q12", text: "12. Soledad o falta de intimidad" },
-          { id: "ce3_q13", text: "13. Cuestiones de fecundidad o reproducción" }
+        { id: "ce3_q4", text: "4. Estar separado del marido o la esposa" },
+        { id: "ce3_q5", text: "5. Deterioro de la salud personal" },
+        { id: "ce3_q6", text: "6. Encontrar quién cuide del niño o problemas con la actual situación de dicho cuidado" },
+        { id: "ce3_q7", text: "7. No tiene tiempo suficiente para los más cercanos" },
+        { id: "ce3_q8", text: "8. Vecindario peligroso o no seguro" },
+        { id: "ce3_q9", text: "9. Relaciones con un pariente intimo (padres, hermanos, yernos)" },
+        { id: "ce3_q10", text: "10. Conflicto sexual o frustración" },
+        { id: "ce3_q11", text: "11. Conflicto trabajo-familia" },
+        { id: "ce3_q12", text: "12. Soledad o falta de intimidad" },
+        { id: "ce3_q13", text: "13. Cuestiones de fecundidad o reproducción" }
         ]
       },
       {
         id: "CE4", part: "Parte II - Conocimiento Emocional", title: "Conciencia de Sí mismo",
         instructions: "Indique cómo describe cada renglón la manera como usted piensa y siente sobre usted mismo:",
         options: [{ label: "Muy bien", value: 4 }, { label: "Moderadamente", value: 3 }, { label: "Un poco", value: 2 }, { label: "Nada bien", value: 1 }],
-        questions: [ { id: "ce4_q1", text: "1. Puedo nombrar mis sentimientos" }, 
-        { id: "ce4_q2", text: "2. He aprendido mucho de mí mismo escuchando mis sentimientos" }, 
-        { id: "ce4_q3", text: "3. Soy consciente de mis sentimientos la mayor parte del tiempo" }, 
-        { id: "ce4_q4", text: "4. Sé cuando me estoy alterando" }, 
-        { id: "ce4_q5", text: "5. Cuando estoy triste, sé por qué" }, 
+        questions: [{ id: "ce4_q1", text: "1. Puedo nombrar mis sentimientos" },
+        { id: "ce4_q2", text: "2. He aprendido mucho de mí mismo escuchando mis sentimientos" },
+        { id: "ce4_q3", text: "3. Soy consciente de mis sentimientos la mayor parte del tiempo" },
+        { id: "ce4_q4", text: "4. Sé cuando me estoy alterando" },
+        { id: "ce4_q5", text: "5. Cuando estoy triste, sé por qué" },
         { id: "ce4_q6", text: "6. Me juzgo a mi mismo por la manera como creo que los demás me ven" },
-          { id: "ce4_q7", text: "7. Gozo de mi vida emocional" },
-          { id: "ce4_q8", text: "8. Me asustan las personas que muestran fuertes emociones" },
-          { id: "ce4_q9", text: "9. A veces quisiera ser otra persona" },
-          { id: "ce4_q10", text: "10. Presto atención a mi estado fisico para entender mis sentimientos" },
-          { id: "ce4_q11", text: "11. Acepto mis sentimientos como propios" }
+        { id: "ce4_q7", text: "7. Gozo de mi vida emocional" },
+        { id: "ce4_q8", text: "8. Me asustan las personas que muestran fuertes emociones" },
+        { id: "ce4_q9", text: "9. A veces quisiera ser otra persona" },
+        { id: "ce4_q10", text: "10. Presto atención a mi estado fisico para entender mis sentimientos" },
+        { id: "ce4_q11", text: "11. Acepto mis sentimientos como propios" }
         ]
       },
       {
         id: "CE5", part: "Parte II - Conocimiento Emocional", title: "Expresión Emocional",
         instructions: "Indique cómo describe cada renglón la manera como usted piensa y siente sobre usted mismo:",
         options: [{ label: "Muy bien", value: 4 }, { label: "Moderadamente", value: 3 }, { label: "Un poco", value: 2 }, { label: "Nada bien", value: 1 }],
-        questions: 
-        [ { id: "ce5_q1", text: "1. Les hago saber a los demás cuándo hacen un buen trabajo" },
+        questions:
+          [{ id: "ce5_q1", text: "1. Les hago saber a los demás cuándo hacen un buen trabajo" },
           { id: "ce5_q2", text: "2. Expreso mis emociones aún cuando sean negativas" },
           { id: "ce5_q3", text: "3. Les hago saber a los demás lo que quiero y necesito" },
           { id: "ce5_q4", text: "4. Mis amigos íntimos dirían que yo expreso mi aprecio por ellos" },
@@ -136,13 +173,13 @@
           { id: "ce5_q7", text: "7. Me cuesta pedir ayuda cuando la necesito" },
           { id: "ce5_q8", text: "8. Al tratar con los demás puedo percibir como se sienten" },
           { id: "ce5_q9", text: "9. Haría cualquier cosa por no parecer tonto ante mis compañeros" }
-        ]
+          ]
       },
       {
         id: "CE6", part: "Parte II - Conocimiento Emocional", title: "Conciencia Emocional de Otros",
         instructions: "Indique cómo describe cada renglón la manera como usted piensa y siente sobre usted mismo:",
         options: [{ label: "Muy bien", value: 4 }, { label: "Moderadamente", value: 3 }, { label: "Un poco", value: 2 }, { label: "Nada bien", value: 1 }],
-        questions:  [
+        questions: [
           { id: "ce6_q1", text: "1. Puedo reconocer las emociones de otros mirándolos a los ojos" },
           { id: "ce6_q2", text: "2. Me cuesta trabajo hablar con personas que no comparten mis puntos de vista" },
           { id: "ce6_q3", text: "3. Me concentro en las cualidades positivas de los demás" },
@@ -370,33 +407,32 @@
           { id: "ce18_q5", text: "5. Catarros o problemas respiratorios" },
           { id: "ce18_q6", text: "6. Problemas del estómago (gases frecuentes, sindrome de irritabilidad intestinal o úlceras)" },
           { id: "ce18_q7", text: "7. Alimentación (pérdida de apetito como en exceso o no tengo tiempo de comer)" },
-           { id: "ce18_q8", text: "8. Dolor del pecho" },
-           { id: "ce18_q9", text: "9. Dolor inexplicables" },
-           { id: "ce18_q10", text: "10. Otros dolores cronicos no anotados" },
-           { id: "ce18_q11", text: "11. Alimentación (pérdida del apetito, como con exceso, no tengo tiempo de comer)" },
-
+          { id: "ce18_q8", text: "8. Dolor del pecho" },
+          { id: "ce18_q9", text: "9. Dolor inexplicables" },
+          { id: "ce18_q10", text: "10. Otros dolores cronicos no anotados" },
+          { id: "ce18_q11", text: "11. Alimentación (pérdida del apetito, como con exceso, no tengo tiempo de comer)" },
           { id: "ce18_q12", text: "12. Fumo" },
-          { id: "ce18_q12", text: "13. tomo bebidas alcohólicas" },
-          { id: "ce18_q13", text: "14. tomo calmantes u otros analgésicos" },
-          { id: "ce18_q14", text: "15. Tomo otras drogas" },
-          { id: "ce18_q15", text: "16. Huyo de las relaciones estrechas" },
-          { id: "ce18_q16", text: "17. Critico, culpo o ridiculizo a los demás" },
-          { id: "ce18_q17", text: "18. Me siento víctima, o que se aprovechan de mí" },
-          { id: "ce18_q18", text: "19. Veo TV (más de dos horas al día)" },
-          { id: "ce18_q19", text: "20. Practico juegos de vídeo o computador, o uso la Internet (más de dos horas al día)" },
-          { id: "ce18_q20", text: "21. Me fastidian las personas con quienes me encuentro" },
-          { id: "ce18_q21", text: "22. Accidentes o heridas" },
-          { id: "ce18_q22", text: "23. Me cuesta trabajo concentrarme" },
-          { id: "ce18_q23", text: "24. Me abruma el trabajo" },
-          { id: "ce18_q24", text: "25. Me distraigo fácilmente" },
-          { id: "ce18_q25", text: "26. No puedo quitarme una cosa de la cabeza y estoy siempre preocupado" },
-          { id: "ce18_q26", text: "27. Me siento deprimido desalentado o sin esperanza" },
-          { id: "ce18_q27", text: "28. Me siento solo" },
-          { id: "ce18_q28", text: "29. Pierdo la memoria" },
-          { id: "cce18_q29", text: "30. Me siento fatigado o abrumado" },
-          { id: "ce18_q30", text: "31. Me cuesta trabajo resolverme o tomar decisiones" },
-          { id: "ce18_q31", text: "32. Me cuesta trabajo empezar o tranquilizarme" }
-        
+          { id: "ce18_q13", text: "13. tomo bebidas alcohólicas" },
+          { id: "ce18_q14", text: "14. tomo calmantes u otros analgésicos" },
+          { id: "ce18_q15", text: "15. Tomo otras drogas" },
+          { id: "ce18_q16", text: "16. Huyo de las relaciones estrechas" },
+          { id: "ce18_q17", text: "17. Critico, culpo o ridiculizo a los demás" },
+          { id: "ce18_q18", text: "18. Me siento víctima, o que se aprovechan de mí" },
+          { id: "ce18_q19", text: "19. Veo TV (más de dos horas al día)" },
+          { id: "ce18_q20", text: "20. Practico juegos de vídeo o computador, o uso la Internet (más de dos horas al día)" },
+          { id: "ce18_q21", text: "21. Me fastidian las personas con quienes me encuentro" },
+          { id: "ce18_q22", text: "22. Accidentes o heridas" },
+          { id: "ce18_q23", text: "23. Me cuesta trabajo concentrarme" },
+          { id: "ce18_q24", text: "24. Me abruma el trabajo" },
+          { id: "ce18_q25", text: "25. Me distraigo fácilmente" },
+          { id: "ce18_q26", text: "26. No puedo quitarme una cosa de la cabeza y estoy siempre preocupado" },
+          { id: "ce18_q27", text: "27. Me siento deprimido desalentado o sin esperanza" },
+          { id: "ce18_q28", text: "28. Me siento solo" },
+          { id: "ce18_q29", text: "29. Pierdo la memoria" },
+          { id: "ce18_q30", text: "30. Me siento fatigado o abrumado" },
+          { id: "ce18_q31", text: "31. Me cuesta trabajo resolverme o tomar decisiones" },
+          { id: "ce18_q32", text: "32. Me cuesta trabajo empezar o tranquilizarme" }
+
         ]
       },
       {
@@ -471,18 +507,18 @@
     ];
 
     const DESTREZAS_DATA = [
-      { id: "F1", title: "Factor 1: Empatía", questions: [{ id: "q1_0", text: "1.0 Comprensión e influencia de los sentimientos de los demás: empatía " }, { id: "q1_1", text: "1.1 Ayudar a los otros a tener oportunidades para desarrollar sus capacidades" }, { id: "q1_2", text: "1.2 Aprender de los demás" }, { id: "q1_3", text: "1.3 Ser un mentor o ejemplo para otros" }, { id: "q1_4", text: "1.4 Estar consciente de uno(a) mismo(a) y entenderse correctamente" }, { id: "q1_5", text: "1.5 Ser sensible a los valores" } ] },
-      { id: "F2", title: "Factor 2: Manejo de Situaciones Inciertas", questions: [ { id: "q2_", text: "2.0 Lograr que situaciones impredecibles e inciertas tengan sentido" },{ id: "q2_1", text: "2.1 Percibir distintos patrones o tendencia en los eventos" }, { id: "q2_2", text: "2.2 Imaginarse las implicaciones de situaciones ambiguas" }, { id: "q2_3", text: "2.3 Ver las cosas de nuevas maneras" }, { id: "q2_4", text: "2.4 Adaptarse a circunstancias cambiantes" }, { id: "q2_5", text: "2.5 Identificar y definir problemas" } ] },
-      { id: "F3", title: "Factor 3: Objetividad y Perspectivas", questions: [ { id: "q3_0", text: "3.0 Ser objetivo(a) y ver los asuntos desde varias perspectivas" },{ id: "q3_1", text: "3.1 Examinar y leer gran cantidad de información" }, { id: "q3_2", text: "3.2 Pertenecer a redes que comparten o reciben información" }, { id: "q3_3", text: "3.3 Escuchar con una mente abierta" }, { id: "q3_4", text: "3.4 Establecer relaciones y fuentes de información fuera de la organización" }, { id: "q3_5", text: "3.5 Estar al tanto de los asuntos importantes dentro de su organización" } ] },
-      { id: "F4", title: "Factor 4: Actualización de Conocimientos", questions: [ { id: "q4_0", text: "4.0 Mantenerse al día con los últimos conocimientos en su campo" }, { id: "q4_1", text: "4.1 Organizar y redactar informes" }, { id: "q4_2", text: "4.2 Juntar información de distintas fuentes" }, { id: "q4_3", text: "4.3 Convertir información especializada en informes prácticos y comprensibles" }, { id: "q4_4", text: "4.4 Organizar gran cantidad de información en patrones con significado" }, { id: "q4_5", text: "4.5 Sintetizar los puntos principales de un argumento" } ] },
-      { id: "F5", title: "Factor 5: Uso de Conceptos y Teorías", questions: [ { id: "q5_0", text: "5.0 Usar conceptos y teorías para interpretar información" },{ id: "q5_1", text: "5.1 Usar la lógica para analizar ideas" }, { id: "q5_2", text: "5.2 Entender como las cosas cuadran dentro de un panorama más amplio" }, { id: "q5_3", text: "5.3 Elaborar modelos conceptuales" }, { id: "q5_4", text: "5.4 Integrar distintas ideas dentro de un sistema o teoría" }, { id: "q5_5", text: "5.5 Utilizar modelos o teorías para predecir tendencias futuras" } ] },
-      { id: "F6", title: "Factor 6: Análisis Estadístico y Matemático", questions: [ { id: "q6_0", text: "6.0 Usar estadísticas y modelos matemáticos para analizar datos " },{ id: "q6_1", text: "6.1 Usar herramientas cuantitativas para analizar problemas" }, { id: "q6_2", text: "6.2 Usar técnicas de análisis financiero" }, { id: "q6_3", text: "6.3 Deducir el significado de informes cuantitativos" }, { id: "q6_4", text: "6.4 Analizar las probabilidades que ocurran distintos eventos" }, { id: "q6_5", text: "6.5 Usar fórmulas y ecuaciones para resolver problemas" } ] },
-      { id: "F7", title: "Factor 7: Competencias Tecnológicas", questions: [ { id: "q7_0", text: "7.0 Trabajar con computadoras" },{ id: "q7_1", text: "7.1 Manejar equipos de alta tecnología" }, { id: "q7_2", text: "7.2 Usar redes computarizadas y servicios de información" }, { id: "q7_3", text: "7.3 Usar computadoras para organizar y manejar información" }, { id: "q7_4", text: "7.4 Construir modelos computarizados o simulaciones" }, { id: "q7_5", text: "7.5 Usar computadoras para analizar datos" } ] },
-      { id: "F8", title: "Factor 8: Estándares de Trabajo y Metas", questions: [ { id: "q8_0", text: "8.0 Establecer criterios para la calidad del trabajo (estándares de trabajo)" },{ id: "q8_1", text: "8.1 Fijar metas de desempeño" }, { id: "q8_2", text: "8.2 Encontrar soluciones a los problemas" }, { id: "q8_3", text: "8.3 Monitorear y controlar el progreso hacia las metas" }, { id: "q8_4", text: "8.4 Evaluar los resultados de acuerdo a las metas" }, { id: "q8_5", text: "8.5 Determinar las acciones a tomar sopesando los costos y beneficios" } ] },
-      { id: "F9", title: "Factor 9: Persistencia y Energía", questions: [ { id: "q9_0", text: "9.0 Ser persistente, tener energía y estabilidad" },{ id: "q9_1", text: "9.1 Trabajar para cumplir con metas y objetivos" }, { id: "q9_2", text: "9.2 Comprometerse con metas y objetivos" }, { id: "q9_3", text: "9.3 Administrar el tiempo y administrar el estrés" }, { id: "q9_4", text: "9.4 Organizar las actividades diarias" }, { id: "q9_5", text: "9.5 Tomar decisiones bajo presión de tiempo y con recursos limitados" } ] },
-      { id: "F10", title: "Factor 10: Toma de Decisiones y Riesgos", questions: [ { id: "q10_0", text: "10.0 Tomar decisiones que implican riesgos" },{ id: "q10_1", text: "10.1 Involucrarse personalmente y asumir responsabilidad" }, { id: "q10_2", text: "10.2 Tomar la iniciativa" }, { id: "q10_3", text: "10.3 Iniciar nuevos proyectos o actividades" }, { id: "q10_4", text: "10.4 Buscar y explotar las oportunidades" }, { id: "q10_5", text: "10.5 Encontrar la forma de hacer que las cosas sucedan" } ] },
-      { id: "F11", title: "Factor 11: Carisma y Liderazgo", questions: [ { id: "q11_0", text: "11.0 Ser carismático: generar entusiasmo, ilusión y compromiso" },{ id: "q11_1", text: "11.1 Inspirar con su ejemplo y brindar valores de acción" }, { id: "q11_2", text: "11.2 Ser un referente experto interna y externamente" }, { id: "q11_3", text: "11.3 Ser confiable y un referente que genera lealtad" }, { id: "q11_4", text: "11.4 Formar a otros líderes y dar coaching" }, { id: "q11_5", text: "11.5 Fortalecer un espíritu de equipo" } ] },
-      { id: "F12", title: "Factor 12: Comunicación Interpersonal", questions: [ { id: "q12_0", text: "12.0 Comunicarse con los demás" },{ id: "q12_1", text: "12.1 Establecer relaciones en las que se da y recibe honestamente" }, { id: "q12_2", text: "12.2 Trabajar como integrante de un equipo" }, { id: "q12_3", text: "12.3 Establecer relaciones ciertas y confiables con los demás" }, { id: "q12_4", text: "12.4 Tener una actitud colaboradora, optimista y de apreciación hacia los demás" }, { id: "q12_5", text: "12.5 Comprender las razones de un conflicto o desacuerdo" } ] }
+      { id: "F1", title: "Factor 1: Empatía", questions: [{ id: "q1_0", text: "1.0 Comprensión e influencia de los sentimientos de los demás: empatía " }, { id: "q1_1", text: "1.1 Ayudar a los otros a tener oportunidades para desarrollar sus capacidades" }, { id: "q1_2", text: "1.2 Aprender de los demás" }, { id: "q1_3", text: "1.3 Ser un mentor o ejemplo para otros" }, { id: "q1_4", text: "1.4 Estar consciente de uno(a) mismo(a) y entenderse correctamente" }, { id: "q1_5", text: "1.5 Ser sensible a los valores" }] },
+      { id: "F2", title: "Factor 2: Manejo de Situaciones Inciertas", questions: [{ id: "q2_", text: "2.0 Lograr que situaciones impredecibles e inciertas tengan sentido" }, { id: "q2_1", text: "2.1 Percibir distintos patrones o tendencia en los eventos" }, { id: "q2_2", text: "2.2 Imaginarse las implicaciones de situaciones ambiguas" }, { id: "q2_3", text: "2.3 Ver las cosas de nuevas maneras" }, { id: "q2_4", text: "2.4 Adaptarse a circunstancias cambiantes" }, { id: "q2_5", text: "2.5 Identificar y definir problemas" }] },
+      { id: "F3", title: "Factor 3: Objetividad y Perspectivas", questions: [{ id: "q3_0", text: "3.0 Ser objetivo(a) y ver los asuntos desde varias perspectivas" }, { id: "q3_1", text: "3.1 Examinar y leer gran cantidad de información" }, { id: "q3_2", text: "3.2 Pertenecer a redes que comparten o reciben información" }, { id: "q3_3", text: "3.3 Escuchar con una mente abierta" }, { id: "q3_4", text: "3.4 Establecer relaciones y fuentes de información fuera de la organización" }, { id: "q3_5", text: "3.5 Estar al tanto de los asuntos importantes dentro de su organización" }] },
+      { id: "F4", title: "Factor 4: Actualización de Conocimientos", questions: [{ id: "q4_0", text: "4.0 Mantenerse al día con los últimos conocimientos en su campo" }, { id: "q4_1", text: "4.1 Organizar y redactar informes" }, { id: "q4_2", text: "4.2 Juntar información de distintas fuentes" }, { id: "q4_3", text: "4.3 Convertir información especializada en informes prácticos y comprensibles" }, { id: "q4_4", text: "4.4 Organizar gran cantidad de información en patrones con significado" }, { id: "q4_5", text: "4.5 Sintetizar los puntos principales de un argumento" }] },
+      { id: "F5", title: "Factor 5: Uso de Conceptos y Teorías", questions: [{ id: "q5_0", text: "5.0 Usar conceptos y teorías para interpretar información" }, { id: "q5_1", text: "5.1 Usar la lógica para analizar ideas" }, { id: "q5_2", text: "5.2 Entender como las cosas cuadran dentro de un panorama más amplio" }, { id: "q5_3", text: "5.3 Elaborar modelos conceptuales" }, { id: "q5_4", text: "5.4 Integrar distintas ideas dentro de un sistema o teoría" }, { id: "q5_5", text: "5.5 Utilizar modelos o teorías para predecir tendencias futuras" }] },
+      { id: "F6", title: "Factor 6: Análisis Estadístico y Matemático", questions: [{ id: "q6_0", text: "6.0 Usar estadísticas y modelos matemáticos para analizar datos " }, { id: "q6_1", text: "6.1 Usar herramientas cuantitativas para analizar problemas" }, { id: "q6_2", text: "6.2 Usar técnicas de análisis financiero" }, { id: "q6_3", text: "6.3 Deducir el significado de informes cuantitativos" }, { id: "q6_4", text: "6.4 Analizar las probabilidades que ocurran distintos eventos" }, { id: "q6_5", text: "6.5 Usar fórmulas y ecuaciones para resolver problemas" }] },
+      { id: "F7", title: "Factor 7: Competencias Tecnológicas", questions: [{ id: "q7_0", text: "7.0 Trabajar con computadoras" }, { id: "q7_1", text: "7.1 Manejar equipos de alta tecnología" }, { id: "q7_2", text: "7.2 Usar redes computarizadas y servicios de información" }, { id: "q7_3", text: "7.3 Usar computadoras para organizar y manejar información" }, { id: "q7_4", text: "7.4 Construir modelos computarizados o simulaciones" }, { id: "q7_5", text: "7.5 Usar computadoras para analizar datos" }] },
+      { id: "F8", title: "Factor 8: Estándares de Trabajo y Metas", questions: [{ id: "q8_0", text: "8.0 Establecer criterios para la calidad del trabajo (estándares de trabajo)" }, { id: "q8_1", text: "8.1 Fijar metas de desempeño" }, { id: "q8_2", text: "8.2 Encontrar soluciones a los problemas" }, { id: "q8_3", text: "8.3 Monitorear y controlar el progreso hacia las metas" }, { id: "q8_4", text: "8.4 Evaluar los resultados de acuerdo a las metas" }, { id: "q8_5", text: "8.5 Determinar las acciones a tomar sopesando los costos y beneficios" }] },
+      { id: "F9", title: "Factor 9: Persistencia y Energía", questions: [{ id: "q9_0", text: "9.0 Ser persistente, tener energía y estabilidad" }, { id: "q9_1", text: "9.1 Trabajar para cumplir con metas y objetivos" }, { id: "q9_2", text: "9.2 Comprometerse con metas y objetivos" }, { id: "q9_3", text: "9.3 Administrar el tiempo y administrar el estrés" }, { id: "q9_4", text: "9.4 Organizar las actividades diarias" }, { id: "q9_5", text: "9.5 Tomar decisiones bajo presión de tiempo y con recursos limitados" }] },
+      { id: "F10", title: "Factor 10: Toma de Decisiones y Riesgos", questions: [{ id: "q10_0", text: "10.0 Tomar decisiones que implican riesgos" }, { id: "q10_1", text: "10.1 Involucrarse personalmente y asumir responsabilidad" }, { id: "q10_2", text: "10.2 Tomar la iniciativa" }, { id: "q10_3", text: "10.3 Iniciar nuevos proyectos o actividades" }, { id: "q10_4", text: "10.4 Buscar y explotar las oportunidades" }, { id: "q10_5", text: "10.5 Encontrar la forma de hacer que las cosas sucedan" }] },
+      { id: "F11", title: "Factor 11: Carisma y Liderazgo", questions: [{ id: "q11_0", text: "11.0 Ser carismático: generar entusiasmo, ilusión y compromiso" }, { id: "q11_1", text: "11.1 Inspirar con su ejemplo y brindar valores de acción" }, { id: "q11_2", text: "11.2 Ser un referente experto interna y externamente" }, { id: "q11_3", text: "11.3 Ser confiable y un referente que genera lealtad" }, { id: "q11_4", text: "11.4 Formar a otros líderes y dar coaching" }, { id: "q11_5", text: "11.5 Fortalecer un espíritu de equipo" }] },
+      { id: "F12", title: "Factor 12: Comunicación Interpersonal", questions: [{ id: "q12_0", text: "12.0 Comunicarse con los demás" }, { id: "q12_1", text: "12.1 Establecer relaciones en las que se da y recibe honestamente" }, { id: "q12_2", text: "12.2 Trabajar como integrante de un equipo" }, { id: "q12_3", text: "12.3 Establecer relaciones ciertas y confiables con los demás" }, { id: "q12_4", text: "12.4 Tener una actitud colaboradora, optimista y de apreciación hacia los demás" }, { id: "q12_5", text: "12.5 Comprender las razones de un conflicto o desacuerdo" }] }
     ];
 
     // ==========================================
@@ -576,15 +612,15 @@
         const saved = localStorage.getItem(itm_nie_answers_by_user);
         return saved ? JSON.parse(saved) : {};
       });
-      
+
       useEffect(() => { localStorage.setItem(itm_nie_idx_by_user, currentSectionIdx.toString()); }, [currentSectionIdx]);
       useEffect(() => { localStorage.setItem(itm_nie_answers_by_user, JSON.stringify(answers)); }, [answers]);
 
       const section = N_I_E_DATA[currentSectionIdx];
       const handleAnswer = (questionId, value) => setAnswers(prev => ({ ...prev, [questionId]: value }));
       const allAnswered = section.questions.every(q => answers[q.id] !== undefined);
-      
-      const handleNext = () => { 
+
+      const handleNext = () => {
         if (currentSectionIdx < N_I_E_DATA.length - 1) {
           setCurrentSectionIdx(currentSectionIdx + 1); 
           window.scrollTo(0,0);
@@ -638,7 +674,7 @@
 
             <div className="mt-10 pt-6 border-t flex justify-end">
               <button onClick={handleNext} disabled={!allAnswered} className={`px-8 py-3.5 font-bold text-[15px] flex items-center gap-2 ${allAnswered ? 'btn-primary' : 'btn-disabled'}`}>
-                {currentSectionIdx === N_I_E_DATA.length - 1 ? 'Finalizar Prueba' : 'Siguiente Sección'} 
+                {currentSectionIdx === N_I_E_DATA.length - 1 ? 'Finalizar Prueba' : 'Siguiente Sección'}
                 <span aria-hidden="true">&rarr;</span>
               </button>
             </div>
@@ -654,7 +690,7 @@
       const itm_des_idx_by_user = `itm_des_idx_${user.cc}`
       const itm_des_answers_by_user = `itm_des_answers_${user.cc}`
       const [currentSectionIdx, setCurrentSectionIdx] = useState(() => {
-        
+
         return parseInt(localStorage.getItem(itm_des_idx_by_user)) || 0;
       });
       const [answers, setAnswers] = useState(() => {
@@ -664,20 +700,20 @@
 
       useEffect(() => { localStorage.setItem(itm_des_idx_by_user, currentSectionIdx.toString()); }, [currentSectionIdx]);
       useEffect(() => { localStorage.setItem(itm_des_answers_by_user, JSON.stringify(answers)); }, [answers]);
-      
+
       const section = DESTREZAS_DATA[currentSectionIdx];
       const handleAnswer = (questionId, type, value) => {
         setAnswers(prev => ({ ...prev, [`${questionId}_${type}`]: value }));
       };
       const allAnswered = section.questions.every(q => answers[`${q.id}_personal`] && answers[`${q.id}_cargo`]);
-      
-      const handleNext = () => { 
+
+      const handleNext = () => {
         if (currentSectionIdx < DESTREZAS_DATA.length - 1) {
-          setCurrentSectionIdx(currentSectionIdx + 1); 
-          window.scrollTo(0,0);
-        } else { 
-          onFinish(answers); 
-          window.scrollTo(0,0);
+          setCurrentSectionIdx(currentSectionIdx + 1);
+          window.scrollTo(0, 0);
+        } else {
+          onFinish(answers);
+          window.scrollTo(0, 0);
         }
       };
 
@@ -731,7 +767,7 @@
 
             <div className="mt-10 pt-6 border-t flex justify-end">
               <button onClick={handleNext} disabled={!allAnswered} className={`px-8 py-3.5 font-bold text-[15px] flex items-center gap-2 ${allAnswered ? 'btn-primary' : 'btn-disabled'}`}>
-                {currentSectionIdx === DESTREZAS_DATA.length - 1 ? 'Finalizar Prueba' : 'Siguiente Factor'} 
+                {currentSectionIdx === DESTREZAS_DATA.length - 1 ? 'Finalizar Prueba' : 'Siguiente Factor'}
                 <span aria-hidden="true">&rarr;</span>
               </button>
             </div>
@@ -747,19 +783,19 @@
       const urlParams = new URLSearchParams(window.location.search);
       const testDesdeUrl = urlParams.get('initTest');
       const [user, setUser] = useState(null);
-      
+
       const [screen, setScreen] = useState(() => {
         if (testDesdeUrl === 'nie') return 'test_nie';
         if (testDesdeUrl === 'destrezas') return 'test_destrezas';
         return 'lobby';
       });
-      
+
       const [nieCompleted, setNieCompleted] = useState(false);
       const [destrezasCompleted, setDestrezasCompleted] = useState(false);
-      
+
       const [calculatedResults, setCalculatedResults] = useState([]);
       const [calculatedDestrezas, setCalculatedDestrezas] = useState([]);
-      
+
       const [isSubmitting, setIsSubmitting] = useState(false);
       const [submitSuccess, setSubmitSuccess] = useState(false);
 
@@ -778,7 +814,7 @@
           const savedStatus = JSON.parse(localStorage.getItem(keyStatus)) || {
             nieCompleted: false, desCompleted: false, hvCompleted: false, compromisoCompleted: false
           };
-          
+
           setNieCompleted(savedStatus.nieCompleted);
           setDestrezasCompleted(savedStatus.desCompleted);
 
@@ -942,14 +978,14 @@
         });
         setCalculatedResults(processed);
         setScreen('results_nie');
-        window.scrollTo(0,0);
+        window.scrollTo(0, 0);
       };
 
       const handleSendDataNIE = () => {
         setIsSubmitting(true);
         const payload = { nombre: user.nombre, cc: String(user.cc), email: user.email };
         calculatedResults.forEach(res => {
-          const prefijo = res.id.toLowerCase(); 
+          const prefijo = res.id.toLowerCase();
           payload[`${prefijo}_puntaje`] = res.score;
           payload[`${prefijo}_interpretacion`] = res.interpretation;
         });
@@ -957,22 +993,22 @@
         const FLOW_URL = "https://default069ff609ffcd494196eaf58efbb15a.37.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/22e801a91838478dab384f725c83d4a0/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=6SnriYoixgcQ5aqHFNUPPI2id8MwbOf_BzkcNxNQtxU";
 
         fetch(FLOW_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
-        .then(response => {
-          setIsSubmitting(false);
-          if (response.ok) { 
-            setSubmitSuccess(true); 
-            setNieCompleted(true); 
-            
-            const keyStatus = `itm_status_${user.cc}`;
-            const currentStatus = JSON.parse(localStorage.getItem(keyStatus)) || {};
-            currentStatus.nieCompleted = true;
-            localStorage.setItem(keyStatus, JSON.stringify(currentStatus));
+          .then(response => {
+            setIsSubmitting(false);
+            if (response.ok) {
+              setSubmitSuccess(true);
+              setNieCompleted(true);
 
-            localStorage.removeItem('itm_nie_idx');
-            localStorage.removeItem('itm_nie_answers');
-            window.scrollTo(0,0); 
-          } else { alert("Error al enviar los datos."); }
-        }).catch(error => { setIsSubmitting(false); console.error("Error:", error); });
+              const keyStatus = `itm_status_${user.cc}`;
+              const currentStatus = JSON.parse(localStorage.getItem(keyStatus)) || {};
+              currentStatus.nieCompleted = true;
+              localStorage.setItem(keyStatus, JSON.stringify(currentStatus));
+
+              localStorage.removeItem('itm_nie_idx');
+              localStorage.removeItem('itm_nie_answers');
+              window.scrollTo(0, 0);
+            } else { alert("Error al enviar los datos."); }
+          }).catch(error => { setIsSubmitting(false); console.error("Error:", error); });
       };
 
       // --- CALCULADORA DESTREZAS ---
@@ -980,15 +1016,15 @@
         const processed = DESTREZAS_DATA.map(section => {
           let scorePersonal = 0;
           let scoreCargo = 0;
-          section.questions.forEach(q => { 
-            scorePersonal += (rawAnswers[`${q.id}_personal`] || 0); 
-            scoreCargo += (rawAnswers[`${q.id}_cargo`] || 0); 
+          section.questions.forEach(q => {
+            scorePersonal += (rawAnswers[`${q.id}_personal`] || 0);
+            scoreCargo += (rawAnswers[`${q.id}_cargo`] || 0);
           });
           return { id: section.id, title: section.title, personal: scorePersonal, cargo: scoreCargo, brecha: scoreCargo - scorePersonal };
         });
         setCalculatedDestrezas(processed);
         setScreen('results_destrezas');
-        window.scrollTo(0,0);
+        window.scrollTo(0, 0);
       };
 
       const handleSendDataDestrezas = () => {
@@ -1003,27 +1039,27 @@
         const FLOW_URL_DESTREZAS = "https://default069ff609ffcd494196eaf58efbb15a.37.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/c4f7257251d3442d94f22f88e47d429d/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=h5qKaM596QWG4oLiDffdGhJLWASAIlYRGrWfBqV4Pp0";
 
         fetch(FLOW_URL_DESTREZAS, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
-        .then(response => {
-          setIsSubmitting(false);
-          if (response.ok) { 
-            setSubmitSuccess(true); 
-            setDestrezasCompleted(true); 
+          .then(response => {
+            setIsSubmitting(false);
+            if (response.ok) {
+              setSubmitSuccess(true);
+              setDestrezasCompleted(true);
 
-            const keyStatus = `itm_status_${user.cc}`;
-            const currentStatus = JSON.parse(localStorage.getItem(keyStatus)) || {};
-            currentStatus.desCompleted = true;
-            localStorage.setItem(keyStatus, JSON.stringify(currentStatus));
+              const keyStatus = `itm_status_${user.cc}`;
+              const currentStatus = JSON.parse(localStorage.getItem(keyStatus)) || {};
+              currentStatus.desCompleted = true;
+              localStorage.setItem(keyStatus, JSON.stringify(currentStatus));
 
-            localStorage.removeItem('itm_des_idx');
-            localStorage.removeItem('itm_des_answers');
-            window.scrollTo(0,0); 
-          } 
-          else { alert("Error del servidor: Power Automate rechazó los datos."); }
-        }).catch(error => { 
-          setIsSubmitting(false); 
-          console.error("Error detallado:", error);
-          alert("No se pudo enviar. Verifica la conexión a internet o la URL."); 
-        });
+              localStorage.removeItem('itm_des_idx');
+              localStorage.removeItem('itm_des_answers');
+              window.scrollTo(0, 0);
+            }
+            else { alert("Error del servidor: Power Automate rechazó los datos."); }
+          }).catch(error => {
+            setIsSubmitting(false);
+            console.error("Error detallado:", error);
+            alert("No se pudo enviar. Verifica la conexión a internet o la URL.");
+          });
       };
 
       if (!user) {
@@ -1033,11 +1069,11 @@
       return (
         <div>
           {screen === 'lobby' && (
-            <LobbyScreen user={user} nieCompleted={nieCompleted} destrezasCompleted={destrezasCompleted} onLogout={handleLogout} onSelectTest={(testName) => { setSubmitSuccess(false); setScreen(testName === 'nie' ? 'test_nie' : 'test_destrezas'); window.scrollTo(0,0); }} />
+            <LobbyScreen user={user} nieCompleted={nieCompleted} destrezasCompleted={destrezasCompleted} onLogout={handleLogout} onSelectTest={(testName) => { setSubmitSuccess(false); setScreen(testName === 'nie' ? 'test_nie' : 'test_destrezas'); window.scrollTo(0, 0); }} />
           )}
 
           {screen === 'test_nie' && <TestScreen user={user} onFinish={processResultsNIE} onBackLobby={() => setScreen('lobby')} />}
-          
+
           {screen === 'results_nie' && (
             <div className="flex-1 w-full flex flex-col bg-itm-light min-h-screen pb-12">
               <div className="bg-itm-blue w-full px-6 py-5 shadow-md sticky top-0 z-50">
@@ -1093,7 +1129,7 @@
           )}
 
           {screen === 'test_destrezas' && <TestDestrezasScreen user={user} onFinish={processResultsDestrezas} onBackLobby={() => setScreen('lobby')} />}
-          
+
           {screen === 'results_destrezas' && (
             <div className="flex-1 w-full flex flex-col bg-itm-light min-h-screen pb-12">
               <div className="bg-itm-blue w-full px-6 py-5 shadow-md sticky top-0 z-50">
@@ -1162,4 +1198,5 @@
     root.render(<App />);
   </script>
 </body>
+
 </html>
