@@ -459,7 +459,8 @@ if (ccDesdeDashboard) {
     const modoRevision = urlParams.get('revisar');
 
     if (modoRevision === 'true') {
-      const datosGuardados = localStorage.getItem('hv_borrador');
+      const datosGuardados = localStorage.getItem(`hv_borrador:${ccDesdeDashboard}`);
+      console.log("Cargando datos guardados para revisión:", datosGuardados);
       if (datosGuardados) {
         const datos = JSON.parse(datosGuardados);
         
@@ -671,11 +672,19 @@ if (ccDesdeDashboard) {
       contrato: document.querySelector('input[name="contrato"]:checked').value,
       ubicacion: document.querySelector('input[name="Ubicacion"]:checked').value,
       
+      
       firmaEstudianteB64: base64FirmaEstudiante,
       fotoEstudianteB64: base64FotoEstudiante
     };
+    const HV_BORRADOR_KEY = `hv_borrador:${datosHV.documento}`
+    const borrador_usuario = localStorage.getItem(HV_BORRADOR_KEY)
+    const datosHV_str = JSON.stringify(datosHV)
+    if (datosHV_str === borrador_usuario) {
+      alert("Información ya enviada previamente. No se detectaron cambios para enviar nuevamente.");
+      return
+    }
 
-    localStorage.setItem('hv_borrador', JSON.stringify(datosHV));
+    localStorage.setItem(HV_BORRADOR_KEY, datosHV_str);
 
     // Pegar URL definitiva de Power Automate aquí
     const webhookURL = "https://default069ff609ffcd494196eaf58efbb15a.37.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/59e35a8a9a5f488c83173cf0b41ee2bd/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=LsFdrJjHfidNm2vmaPjNXUSna1Z8ArtBGj8Wq_ByhIs";
