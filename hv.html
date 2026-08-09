@@ -12,6 +12,7 @@
     --negro:         #1A1A1A;
     --gris-l:        #F4F6F9;
     --gris-m:        #C5CDD8;
+    --rojo:          #dc3545;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -88,11 +89,12 @@
   label.chk { display: inline-flex; align-items: center; gap: 4px; margin-right: 12px; cursor: pointer; }
   
   .firma-lbl { font-size: 7pt; color: #555; margin-top: 5px; font-weight: bold; }
-  .firma-line { border-bottom: 1px solid var(--gris-m); margin: 15px 0 2px; }
+  .firma-line { border-bottom: 1px solid var(--gris-m); margin: 10px 0 2px; }
   
   .firma-container { text-align: center; padding: 10px; }
   .preview-firma { max-height: 60px; max-width: 150px; margin: 5px auto; display: none; border: 1px dashed var(--gris-m); }
 
+  /* Estilos mejorados para la foto */
   .foto-wrapper {
     width: 35mm;
     height: 45mm;
@@ -108,13 +110,39 @@
     margin: 0 auto;
   }
   .foto-wrapper img { width: 100%; height: 100%; object-fit: cover; display: none; }
-  .foto-placeholder { font-size: 7.5pt; color: #666; text-align: center; padding: 5px; }
+  .foto-placeholder { font-size: 7.5pt; color: #666; text-align: center; padding: 5px; display: flex; flex-direction: column; align-items: center; gap: 5px; }
 
-  .hab-hab { background-color: var(--azul-l); text-align: center; font-weight: bold; color: var(--azul); font-size: 8pt; border: 1px solid var(--gris-m); }
+  .foto-actions {
+    display: none;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 4px;
+    text-align: center;
+    gap: 4px;
+  }
+  .foto-wrapper:hover .foto-actions {
+    display: flex;
+    justify-content: center;
+  }
+  .btn-foto-act {
+    background: #fff;
+    border: none;
+    font-size: 7pt;
+    padding: 2px 5px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  .btn-foto-del { background: var(--rojo); color: #fff; }
+
+  .file-feedback { font-size: 7.5pt; color: var(--rojo); margin-top: 3px; display: none; }
 
   @media print {
     body { background: none; }
-    .btn-actions, input[type="file"], .foto-placeholder input { display: none !important; }
+    .btn-actions, input[type="file"], .foto-placeholder input, .foto-actions, .btn-small-del { display: none !important; }
     .page { margin: 0; box-shadow: none; padding: 4mm; width: 100%; }
     input[type="text"], input[type="date"], textarea, select { border-bottom: 1px solid #bbb !important; }
     .foto-wrapper { border: 1px solid var(--gris-m); }
@@ -142,7 +170,6 @@
           <h2 style="font-size:12pt; color:var(--azul); font-weight:bold;">FORMATO ÚNICO DE HOJA DE VIDA ESTUDIANTIL</h2>
         </td>
         <td rowspan="2" style="border:1px solid #C8D5EA; font-size:8pt; padding:6px;">
-          <p><strong></strong> </p>
           <p><strong>Versión:</strong> V1</p>
         </td>
       </tr>
@@ -159,9 +186,18 @@
           <td class="input-cell"><input type="text" id="nombre" required></td>
           <td rowspan="6" style="border: 1px solid var(--gris-m); vertical-align: middle; padding: 5px; background: #fff;">
             <div class="foto-wrapper" id="fotoContainer">
-              <span class="foto-placeholder" id="txtPlaceholder">Foto Reciente<br><br><input type="file" id="fileFoto" accept="image/*" onchange="cargarFoto(event)" style="width:100%; font-size:7pt;"></span>
+              <div class="foto-placeholder" id="txtPlaceholder">
+                <span>Foto Reciente</span>
+                <span style="font-size:6.5pt; color:#888;">(Máx 2MB)</span>
+                <input type="file" id="fileFoto" accept="image/png, image/jpeg, image/jpg" onchange="cargarFoto(event)" style="width:100%; font-size:7pt;">
+              </div>
               <img id="previewFoto" alt="Foto Aspirante">
+              <div class="foto-actions" id="fotoActions">
+                <button type="button" class="btn-foto-act" onclick="document.getElementById('fileFoto').click()">Modificar</button>
+                <button type="button" class="btn-foto-act btn-foto-del" onclick="eliminarFoto()">Quitar</button>
+              </div>
             </div>
+            <div id="fotoError" class="file-feedback"></div>
           </td>
         </tr>
         <tr><td class="lbl">Documento de Identidad:</td><td class="input-cell alt"><input type="text" id="documento" required></td></tr>
@@ -390,7 +426,8 @@
           <td class="firma-container" style="width: 50%; border-right: 1px solid var(--gris-m); vertical-align: bottom;">
             <img id="previewEstudiante" class="preview-firma" alt="Firma Estudiante">
             <div style="margin: 5px 0;">
-              <input type="file" id="fileEstudiante" accept="image/*" onchange="cargarFirma(event, 'previewEstudiante')" style="font-size:8pt;">
+              <input type="file" id="fileEstudiante" accept="image/png, image/jpeg, image/jpg" onchange="cargarFirma(event, 'previewEstudiante')" style="font-size:8pt;">
+              <div id="firmaError" class="file-feedback"></div>
             </div>
             <div class="firma-line"></div>
             <p class="firma-lbl">Firma del Estudiante (Adjuntada por Web)</p>
@@ -409,6 +446,9 @@
 </div>
 
 <script>
+  const MAX_FILE_SIZE_MB = 2;
+  const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
+
   const programasPorFacultad = {
     "Artes": [
       "Artes Visuales", "Cine", "Artes de la Grabación y Producción Musical",
@@ -420,14 +460,14 @@
       "Administración del Deporte", "Ingeniería Financiera y de Negocios", "Ingeniería de Producción", "Ingeniería de la Calidad", "Ingeniería Financiera", "Marketing", "Contaduría Pública"
     ],
     "Exactas": [
-      "Tecnología en Mantenimiento de Equipo Biomédico", "Tecnología en Construcción de Acabados Arquitectónicos",
+      "Tecnología en Mantenimiento de Equipo Biomédico", "Tecnología en Construcción de Acabados ArquITECTÓNICOS",
       "Ingeniería Biomédica", "Ciencias Ambientales", "Ciencia y Tecnología de los Alimentos", "Física", "Química Industrial"
     ],
     "Ingenierias": [
       "Tecnología en Telecomunicaciones", "Tecnología en Electrónica", "Tecnologia en Automatización Electronica",
       "Tecnología en Sistemas Electromecánicos", "Tecnología en Desarrollo de Software", "Tecnología en Diseño y Programación de Soluciones de Software como Servicio - SaaS - Virtual", 
       "Tecnología en Desarrollo de Aplicaciones para Dispositivos Móviles-Virtual","Ingeniería de Sistemas",
-      "Ingeniería de Telecomunicaciones", "Ingeniería Electrónica", "Ingeniería Electromecánica", , "Ingeniería Mecatrónica"
+      "Ingeniería de Telecomunicaciones", "Ingeniería Electrónica", "Ingeniería Electromecánica", "Ingeniería Mecatrónica"
     ]
   };
 
@@ -442,25 +482,24 @@
       document.querySelectorAll('.chk-disc').forEach(c => c.checked = false);
     }
   }
-// Capturar datos enviados desde el Dashboard
-const urlParams = new URLSearchParams(window.location.search);
-const ccDesdeDashboard = urlParams.get('cc');
-const nombreDesdeDashboard = urlParams.get('nombre');
-const correoDesdeDashboard = urlParams.get('email');
 
-if (ccDesdeDashboard) {
-  // Auto-llenar campos en el formulario de la página actual
-  if(document.getElementById('documento')) document.getElementById('documento').value = ccDesdeDashboard;
-  if(document.getElementById('nombre')) document.getElementById('nombre').value = nombreDesdeDashboard;
-  if(document.getElementById('correo')) document.getElementById('correo').value = correoDesdeDashboard;
-}
+  // Capturar datos enviados desde el Dashboard
+  const urlParams = new URLSearchParams(window.location.search);
+  const ccDesdeDashboard = urlParams.get('cc');
+  const nombreDesdeDashboard = urlParams.get('nombre');
+  const correoDesdeDashboard = urlParams.get('email');
+
+  if (ccDesdeDashboard) {
+    if(document.getElementById('documento')) document.getElementById('documento').value = ccDesdeDashboard;
+    if(document.getElementById('nombre')) document.getElementById('nombre').value = nombreDesdeDashboard;
+    if(document.getElementById('correo')) document.getElementById('correo').value = correoDesdeDashboard;
+  }
+
   window.addEventListener('DOMContentLoaded', () => {
-    const urlParams = new URLSearchParams(window.location.search);
     const modoRevision = urlParams.get('revisar');
 
     if (modoRevision === 'true') {
       const datosGuardados = localStorage.getItem(`hv_borrador:${ccDesdeDashboard}`);
-      console.log("Cargando datos guardados para revisión:", datosGuardados);
       if (datosGuardados) {
         const datos = JSON.parse(datosGuardados);
         
@@ -487,7 +526,7 @@ if (ccDesdeDashboard) {
         document.getElementById('areas_desempeno').value = datos.areas || '';
         document.getElementById('aptitudes').value = datos.aptitudes || '';
 
-        // Cursos Complementarios
+        // Cursos
         document.getElementById('curso_nom1').value = datos.curso_nom1 || '';
         document.getElementById('curso_inst1').value = datos.curso_inst1 || '';
         document.getElementById('curso_ini1').value = datos.curso_ini1 || '';
@@ -535,11 +574,7 @@ if (ccDesdeDashboard) {
         }
 
         if (datos.fotoEstudianteB64) {
-          const imgFoto = document.getElementById('previewFoto');
-          imgFoto.src = datos.fotoEstudianteB64;
-          imgFoto.style.display = "block";
-          document.getElementById('txtPlaceholder').style.display = "none";
-          base64FotoEstudiante = datos.fotoEstudianteB64;
+          mostrarPreviewFoto(datos.fotoEstudianteB64);
         }
 
         alert('ℹ️ Se han restaurado tus datos anteriores automáticamente.');
@@ -570,29 +605,69 @@ if (ccDesdeDashboard) {
     });
   }
 
+  // FUNCIONES MEJORADAS PARA FOTO
+  function cargarFoto(event) {
+    const archivo = event.target.files[0];
+    const errorElem = document.getElementById('fotoError');
+    errorElem.style.display = "none";
+    errorElem.textContent = "";
+
+    if (!archivo) return;
+
+    if (archivo.size > MAX_FILE_SIZE_BYTES) {
+      errorElem.textContent = `La foto excede el límite permisible de ${MAX_FILE_SIZE_MB}MB.`;
+      errorElem.style.display = "block";
+      event.target.value = "";
+      return;
+    }
+
+    const lector = new FileReader();
+    lector.onload = function(e) {
+      mostrarPreviewFoto(e.target.result);
+    };
+    lector.readAsDataURL(archivo);
+  }
+
+  function mostrarPreviewFoto(srcBase64) {
+    const imgFoto = document.getElementById('previewFoto');
+    imgFoto.src = srcBase64;
+    imgFoto.style.display = "block";
+    document.getElementById('txtPlaceholder').style.display = "none";
+    base64FotoEstudiante = srcBase64;
+  }
+
+  function eliminarFoto() {
+    document.getElementById('fileFoto').value = "";
+    const imgFoto = document.getElementById('previewFoto');
+    imgFoto.src = "";
+    imgFoto.style.display = "none";
+    document.getElementById('txtPlaceholder').style.display = "flex";
+    base64FotoEstudiante = "";
+    document.getElementById('fotoError').style.display = "none";
+  }
+
+  // FUNCIONES MEJORADAS PARA FIRMA
   function cargarFirma(event, idPreview) {
     const archivo = event.target.files[0];
+    const errorElem = document.getElementById('firmaError');
+    errorElem.style.display = "none";
+    errorElem.textContent = "";
+
     if (!archivo) return;
+
+    if (archivo.size > MAX_FILE_SIZE_BYTES) {
+      errorElem.textContent = `La imagen de firma excede el límite permisible de ${MAX_FILE_SIZE_MB}MB.`;
+      errorElem.style.display = "block";
+      event.target.value = "";
+      return;
+    }
+
     const lector = new FileReader();
     lector.onload = function(e) {
       const imgElem = document.getElementById(idPreview);
       imgElem.src = e.target.result;
       imgElem.style.display = "block";
       base64FirmaEstudiante = e.target.result;
-    };
-    lector.readAsDataURL(archivo);
-  }
-
-  function cargarFoto(event) {
-    const archivo = event.target.files[0];
-    if (!archivo) return;
-    const lector = new FileReader();
-    lector.onload = function(e) {
-      const imgFoto = document.getElementById('previewFoto');
-      imgFoto.src = e.target.result;
-      imgFoto.style.display = "block";
-      document.getElementById('txtPlaceholder').style.display = "none";
-      base64FotoEstudiante = e.target.result;
     };
     lector.readAsDataURL(archivo);
   }
@@ -641,7 +716,6 @@ if (ccDesdeDashboard) {
       areas: document.getElementById('areas_desempeno').value,
       aptitudes: document.getElementById('aptitudes').value,
       
-      // Cursos Complementarios
       curso_nom1: document.getElementById('curso_nom1').value,
       curso_inst1: document.getElementById('curso_inst1').value,
       curso_ini1: document.getElementById('curso_ini1').value,
@@ -658,7 +732,6 @@ if (ccDesdeDashboard) {
       exp_cargo2: document.getElementById('exp_cargo2').value,
       exp_funciones2: document.getElementById('exp_funciones2').value,
 
-      // Referencias
       ref_per_nombre: document.getElementById('ref_per_nombre').value,
       ref_per_parentesco: document.getElementById('ref_per_parentesco').value,
       ref_per_telefono: document.getElementById('ref_per_telefono').value,
@@ -672,21 +745,21 @@ if (ccDesdeDashboard) {
       contrato: document.querySelector('input[name="contrato"]:checked').value,
       ubicacion: document.querySelector('input[name="Ubicacion"]:checked').value,
       
-      
       firmaEstudianteB64: base64FirmaEstudiante,
       fotoEstudianteB64: base64FotoEstudiante
     };
-    const HV_BORRADOR_KEY = `hv_borrador:${datosHV.documento}`
-    const borrador_usuario = localStorage.getItem(HV_BORRADOR_KEY)
-    const datosHV_str = JSON.stringify(datosHV)
+
+    const HV_BORRADOR_KEY = `hv_borrador:${datosHV.documento}`;
+    const borrador_usuario = localStorage.getItem(HV_BORRADOR_KEY);
+    const datosHV_str = JSON.stringify(datosHV);
+
     if (datosHV_str === borrador_usuario) {
       alert("Información ya enviada previamente. No se detectaron cambios para enviar nuevamente.");
-      return
+      return;
     }
 
     localStorage.setItem(HV_BORRADOR_KEY, datosHV_str);
 
-    // Pegar URL definitiva de Power Automate aquí
     const webhookURL = "https://default069ff609ffcd494196eaf58efbb15a.37.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/59e35a8a9a5f488c83173cf0b41ee2bd/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=LsFdrJjHfidNm2vmaPjNXUSna1Z8ArtBGj8Wq_ByhIs";
 
     try {
