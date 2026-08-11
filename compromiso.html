@@ -111,7 +111,7 @@
 
   label.chk { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; font-weight: bold; color: var(--azul); }
   
-  .firma-lbl { font-size: 7.5pt; color: #555; margin-top: 5px; font-weight: bold; }
+  /*.firma-lbl { font-size: 7.5pt; color: #555; margin-top: 5px; font-weight: bold; }
   .firma-line { border-bottom: 1px solid var(--gris-m); margin: 15px 0 2px; }
   
   .firma-container {
@@ -126,13 +126,182 @@
     border: 1px dashed var(--gris-m);
   }
 
+   /* =====================================================
+     CIERRE Y FIRMAS
+     ===================================================== */
+
+  .bloque-firmas {
+    margin-top: 10px;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .constancia-firma {
+    border: 1px solid var(--gris-m);
+    border-left: 4px solid var(--azul);
+    background: var(--gris-l);
+    border-radius: 6px;
+    padding: 9px 12px;
+    margin-bottom: 10px;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .constancia-titulo {
+    color: var(--azul);
+    font-size: 8.5pt;
+    font-weight: bold;
+    margin-bottom: 4px;
+  }
+
+  .constancia-firma p {
+    font-size: 8pt;
+    line-height: 1.4;
+    text-align: justify;
+    color: #333;
+  }
+
+  .tabla-firmas-wrapper {
+    border: 1px solid var(--gris-m);
+    border-radius: 7px;
+    overflow: hidden;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .tabla-firmas {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+  }
+
+  .firma-container {
+    width: 50%;
+    height: 145px;
+    padding: 12px 20px;
+    text-align: center;
+    vertical-align: middle;
+  }
+
+  .firma-estudiante {
+    background: #fff;
+    border-right: 1px solid var(--gris-m);
+  }
+
+  .validacion-itm {
+    background: var(--gris-l);
+  }
+
+  .titulo-firma {
+    color: var(--azul);
+    font-size: 8.5pt;
+    font-weight: bold;
+    margin-bottom: 4px;
+  }
+
+  .area-firma {
+    height: 52px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .preview-firma {
+    max-height: 52px;
+    max-width: 160px;
+    margin: 0 auto;
+    display: none;
+    border: none;
+    object-fit: contain;
+  }
+
+  .cargar-firma {
+    margin: 4px 0;
+    text-align: center;
+  }
+
+  .cargar-firma input[type="file"] {
+    display: none;
+  }
+
+  .btn-firma {
+    display: inline-block;
+    padding: 3px 9px;
+    border: 1px solid var(--azul);
+    border-radius: 3px;
+    color: var(--azul);
+    background: #fff;
+    font-size: 7pt;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  .fecha-diligenciamiento {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    margin-top: 5px;
+    font-size: 7.5pt;
+    color: #444;
+  }
+
+  .fecha-diligenciamiento strong {
+    color: #333;
+  }
+
+  .fecha-diligenciamiento span {
+    color: var(--azul);
+    font-weight: bold;
+  }
+
+  .sello-validacion {
+    height: 65px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    color: var(--azul);
+    text-align: left;
+  }
+
+  .sello-icono {
+    width: 32px;
+    height: 32px;
+    border: 2px solid var(--azul);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: bold;
+    flex-shrink: 0;
+  }
+
+  .sello-texto {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .sello-texto strong {
+    font-size: 8pt;
+    letter-spacing: .3px;
+  }
+
+  .sello-texto span {
+    font-size: 7pt;
+    font-style: italic;
+  }
+
   @media print {
     body { background: none; }
-    .btn-actions, input[type="file"] { display: none !important; }
+    .btn-actions, input[type="file"], .cargar-firma { display: none !important; }
     .page { margin: 0; box-shadow: none; padding: 4mm; width: 100%; }
     input[type="text"], input[type="date"], select { border-bottom: 1px solid #bbb !important; }
     @page { size: letter; margin: 10mm 12mm; }
   }
+
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
@@ -216,9 +385,6 @@
 <div class="legal-item"><span class="bullet">9.</span><span>Iniciar las actividades de la práctica una vez cumplidos de forma estricta todos los términos contractuales y normativos exigidos tanto por la Institución Universitaria como por la empresa patrocinadora.</span></div>
 <div class="legal-item"><span class="bullet">10.</span><span>Acatar el reglamento interno de trabajo de la empresa patrocinadora o escenario de prácticas laborales y las reglas esenciales vigentes para la seguridad y buen ambiente laboral.</span></div>
 <div class="legal-item"><span class="bullet">11.</span><span>Aceptar y comprender que, por ningún motivo, podré retirarme o abandonar una práctica en ejecución para aceptar ofertas o vinculaciones en otra empresa.</span></div>
-<br>
-<br>
-<br>
 <div class="legal-item"><span class="bullet">12.</span><span>Informar de manera oportuna y estrictamente por escrito al Asesor Académico asignado, a mi jefe inmediato o al Coordinador de Prácticas sobre cualquier dificultad, anomalía o caso fortuito surgido en el desarrollo de mis funciones.</span></div>
 <div class="legal-item"><span class="bullet">13.</span><span>No renunciar en ninguna circunstancia a la práctica sin antes contar con el debido proceso de asesoría, mediación y autorización expresa del equipo técnico de la Oficina de Prácticas.</span></div>
 <div class="legal-item"><span class="bullet">14.</span><span>Comprometerse a estar matriculado para el semestre actual. De no hacerlo, será sancionado con el retiro inmediato de la empresa patrocinadora o el escenario de prácticas laborales o de la base de datos de disponibles. En este caso, deberá optar por una nueva modalidad de grado con la jefatura de su programa.</span></div>
@@ -239,12 +405,6 @@
 <div class="legal-item"><span class="bullet">29.</span><span>Entregar la sistematización de las prácticas al momento de la culminación de esta, con evidencia del cumplimiento de los resultados de aprendizaje establecidos en el Plan de Prácticas y dar cuenta de su desempeño por competencias en el escenario laboral real.</span></div>
 <div class="legal-item"><span class="bullet">30.</span><span>Cumplir con la entrega de la documentación necesaria para la finalización de las prácticas profesionales.</span></div>
 <div class="legal-item"><span class="bullet">31.</span><span>Tendrá un mes después de finalizadas sus prácticas para hacer entrega final de su trabajo del Plan de Prácticas.</span></div>
-  <br>
-  <br>
-  <br>    
-  <br>    
-  <br>    
-  <br>    
 
 <p style="font-size: 9pt; font-weight: bold; margin-top: 15px; color: #dc3545; border-top: 1px dashed var(--gris-m); padding-top: 10px;">
         ⚠️ MANIFESTACIÓN DE ACEPTACIÓN DE SANCIONES:
@@ -254,7 +414,7 @@
       </p>
     </div>
     <div class="tw" style="background: var(--azul-l); padding: 12px; border: 1px solid var(--gris-m); margin-top: 15px;">
-      <h4 style="color: var(--azul); font-size: 9pt; margin-bottom: 5px; font-weight: bold;">AUTORIZACIÓN — TRATAMIENTO DE DATOS PERSONALES (LEY 1581 DE 2012)</h4>
+      <h4 style="color: var(--azul); font-size: 9pt; margin-bottom: 5px; font-weight: bold;">AUTORIZACIÓN — TRATAMIENTO DE DATOS PERSONALES</h4>
       <p style="font-size: 8pt; text-align: justify; color: #333; line-height: 1.4; margin-bottom: 8px;">
       De conformidad con la Ley 1581 de 2012 y sus decretos reglamentarios, el practicante autoriza al ITM el tratamiento de sus datos personales y el uso de su imagen fotográfica para los fines académicos e institucionales que se describen a continuación:
       </p>
@@ -263,64 +423,64 @@
       </label>
     </div>
 
-    <div class="spacer" style="height:20px;"></div>
-    <div class="tw">
-      <table style="table-layout: fixed; width: 100%;">
-        <tr>
-          <p style="font-size: 8pt; text-align: justify; color: #333; line-height: 1.4; margin-bottom: 8px;">
-           Para constancia de lo anterior, firmo en señal de total aceptación y compromiso legal de las responsabilidades aquí consagrada 
-          </p>
+    <div class="bloque-firmas">
 
-    <div class="spacer" style="height:25px;"></div>
-    <div class="tw">
-      <table style="table-layout: fixed; width: 100%;">
-        <tr>
-          <td class="firma-container" style="width: 50%; border-right: 1px solid var(--gris-m); vertical-align: bottom;">
-            <img id="previewEstudiante" class="preview-firma" alt="Firma Estudiante">
-            <div style="margin: 5px 0;">
-              <input type="file" id="fileEstudiante" accept="image/*" onchange="cargarFirma(event, 'previewEstudiante')" style="font-size:8pt;">
-            </div>
-            <div class="firma-line"></div>
-            <p class="firma-lbl">Firma del Estudiante</p>
-  
-    <div class="fecha-diligenciamiento">
-        <strong>Fecha diligenciamiento:</strong>
-        <span id="fechaDiligenciamiento"></span>
-    </div>
+      <div class="constancia-firma">
+        <div class="constancia-titulo">FORMALIZACIÓN DEL COMPROMISO</div>
+        <p>
+          Para constancia de lo anterior, firmo en señal de total aceptación y compromiso legal de las responsabilidades aquí consagradas.
+        </p>
+      </div>
 
-    <script>
-        const fecha = new Date();
+      <div class="tabla-firmas-wrapper">
+        <table class="tabla-firmas">
+          <tr>
 
-        const dia = String(fecha.getDate()).padStart(2, '0');
-        const mes = String(fecha.getMonth() + 1).padStart(2, '0');
-        const año = fecha.getFullYear();
+            <td class="firma-container firma-estudiante">
+              <div class="titulo-firma">FIRMA DEL ESTUDIANTE</div>
 
-        document.getElementById('fechaDiligenciamiento').textContent =
-            `${dia}/${mes}/${año}`;
-    </script>
+              <div class="area-firma">
+                <img id="previewEstudiante" class="preview-firma" alt="Firma Estudiante">
+              </div>
 
-          </td>
-          
-          <td class="firma-container" style="width: 50%; vertical-align: bottom; background-color: var(--gris-l);">
-            <div style="height: 50px; display: flex; align-items: center; justify-content: center; color: var(--azul); font-weight: bold; font-style: italic; font-size: 8.5pt; text-align: center;">
-              Radicado y Validado<br>Oficina de Prácticas Profesionales ITM
-            </div>
-            <div class="firma-line"></div>
-            <p class="firma-lbl">Validación Institucional ITM</p>
-          </td>
+              <div class="cargar-firma">
+                <label for="fileEstudiante" class="btn-firma">Cargar firma</label>
+                <input type="file" id="fileEstudiante" accept="image/*" onchange="cargarFirma(event, 'previewEstudiante')">
+              </div>
 
-        </tr>
+              <div class="firma-line"></div>
+              <p class="firma-lbl">Firma del Estudiante</p>
 
-       
-      </table>
+              <div class="fecha-diligenciamiento">
+                <strong>Fecha de diligenciamiento:</strong>
+                <span id="fechaDiligenciamiento"></span>
+              </div>
+            </td>
 
-      
+            <td class="firma-container validacion-itm">
+              <div class="sello-validacion">
+                <div class="sello-icono">✓</div>
+                <div class="sello-texto">
+                  <strong>RADICADO Y VALIDADO</strong>
+                  <span>Oficina de Prácticas Profesionales ITM</span>
+                </div>
+              </div>
+
+              <div class="firma-line"></div>
+              <p class="firma-lbl">Validación Institucional ITM</p>
+            </td>
+
+          </tr>
+        </table>
+      </div>
+
     </div>
 
      <p style="font-size: 8pt; text-align: justify; color: #333; line-height: 1.4; margin-bottom: 8px;">
 Referencia normativa: Manual de Prácticas Profesionales ITM · Decreto 0223 del 5 de marzo de 2026 (Min. Trabajo) · Ley 1780/2016 · Ley 2466/2025 (Reforma Laboral) · Art. 81 Código Sustantivo del Trabajo.          </p>
   </form>
 </div>
+
 
 <script>
   // Programas académicos oficiales por facultad del ITM
@@ -364,8 +524,18 @@ if (ccDesdeDashboard) {
   // Recuperación automática del borrador para revisiones de GitHub Pages
   window.addEventListener('DOMContentLoaded', () => {
     
-    // Establecer la fecha de hoy por defecto
-    document.getElementById('fecha_suscripcion').value = new Date().toISOString().split('T')[0];
+   // Establecer la fecha de hoy por defecto
+    const hoy = new Date();
+    document.getElementById('fecha_suscripcion').value = hoy.toISOString().split('T')[0];
+
+    // Mostrar automáticamente la fecha de diligenciamiento en el bloque de firmas
+    const dia = String(hoy.getDate()).padStart(2, '0');
+    const mes = String(hoy.getMonth() + 1).padStart(2, '0');
+    const año = hoy.getFullYear();
+    const fechaDiligenciamiento = document.getElementById('fechaDiligenciamiento');
+    if (fechaDiligenciamiento) {
+      fechaDiligenciamiento.textContent = `${dia}/${mes}/${año}`;
+    }
 
     const urlParams = new URLSearchParams(window.location.search);
     const modoRevision = urlParams.get('revisar');
