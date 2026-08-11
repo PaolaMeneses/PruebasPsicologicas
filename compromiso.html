@@ -302,6 +302,7 @@
     @page { size: letter; margin: 10mm 12mm; }
   }
 
+
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
@@ -641,6 +642,33 @@ if (ccDesdeDashboard) {
 
   // Configuración del PDF
  // Configuración del PDF
+
+  const elemento = document.getElementById('compromiso-container');
+  const opciones = {
+    margin: [1, 0, 2, 0], 
+    filename: `Compromiso_${datosCompromiso.documento}_${datosCompromiso.nombre}.pdf`,
+    image: { type: 'jpeg', quality: 0.98 },
+    html2canvas: {
+      scale: 2,
+      useCORS: true,
+      onclone: function(clonedDocument) {
+        // Ocultar controles de carga de firma en el documento clonado
+        // que html2pdf convierte a PDF. No afecta la pantalla original.
+        clonedDocument.querySelectorAll('.cargar-firma, .btn-firma, input[type="file"], .btn-actions')
+          .forEach(function(el) {
+            el.style.setProperty('display', 'none', 'important');
+          });
+      }
+    },
+    jsPDF: { unit: 'mm', format: 'letter', orientation: 'portrait' },
+    // ESTA ES LA LÍNEA NUEVA: Le dice qué elementos no debe cortar por la mitad
+    pagebreak: { mode: ['css', 'legacy'], avoid: ['.legal-item', '.sec-title', '.bloque-firmas', '.constancia-firma', '.tabla-firmas-wrapper'] }
+  };
+
+  try {
+    // Generar el PDF y obtenerlo como cadena Base64
+    const pdfAsString = await html2pdf().set(opciones).from(elemento).outputPdf('datauristring');
+    /*
   const elemento = document.getElementById('compromiso-container');
   const opciones = {
     margin: [1, 0, 2, 0], 
@@ -654,7 +682,7 @@ if (ccDesdeDashboard) {
 
   try {
     // Generar el PDF y obtenerlo como cadena Base64
-    const pdfAsString = await html2pdf().set(opciones).from(elemento).outputPdf('datauristring');
+    const pdfAsString = await html2pdf().set(opciones).from(elemento).outputPdf('datauristring');*/
     
     // Restaurar botones
     document.querySelector('.btn-actions').style.display = 'flex';
