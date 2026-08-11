@@ -86,7 +86,7 @@
   select { cursor: pointer; }
   textarea { min-height: 40px; }
 
-  label.chk { display: inline-flex; align-items: center; gap: 4px; margin-right: 12px; cursor: pointer; }
+  label.chk { align-items: center; gap: 4px; margin-right: 12px; cursor: pointer; }
   
   .firma-lbl { font-size: 7pt; color: #555; margin-top: 5px; font-weight: bold; }
   .firma-line { border-bottom: 1px solid var(--gris-m); margin: 10px 0 2px; }
@@ -170,7 +170,10 @@
           <h2 style="font-size:12pt; color:var(--azul); font-weight:bold;">FORMATO ÚNICO DE HOJA DE VIDA ESTUDIANTIL</h2>
         </td>
         <td rowspan="2" style="border:1px solid #C8D5EA; font-size:8pt; padding:6px;">
-          <p><strong>Versión:</strong> V1</p>
+          <p><strong>Código:</strong> FDE 071</p>
+          <p><strong>Versión:</strong> 07</p>
+          <p><strong>Fecha:</strong> 05-08-2026</p>
+
         </td>
       </tr>
     </table>
@@ -412,10 +415,10 @@
     <div class="tw" style="background: var(--azul-l); padding: 12px; border: 1px solid var(--gris-m); margin-top: 15px;">
       <h4 style="color: var(--azul); font-size: 9pt; margin-bottom: 5px; font-weight: bold;">DECLARACIÓN DE TRATAMIENTO DE DATOS (LEY 1581 DE 2012)</h4>
       <p style="font-size: 8pt; text-align: justify; color: #333; line-height: 1.4; margin-bottom: 8px;">
-        En cumplimiento de la ley 1581 de 2012, ITM está comprometida con el tratamiento lícito y seguro de los datos personales de sus colaboradores y terceros, garantizando su confidencialidad. Consulte nuestra Política de Tratamiento de Información en: <a href="https://www.itm.edu.co" target="_blank" style="color:var(--azul); font-weight:bold;">www.itm.edu.co</a>. Los titulares en cualquier momento pueden ejercer sus derechos legalmente consagrados de conocimiento, actualización, rectificación y supresión de sus datos personales a través del portal web <a href="https://www.itm.edu.co" target="_blank" style="color:var(--azul); font-weight:bold;">https://www.itm.edu.co</a>.
+      De conformidad con la Ley 1581 de 2012 y sus decretos reglamentarios, el practicante autoriza al ITM el tratamiento de sus datos personales y el uso de su imagen fotográfica para los fines académicos e institucionales que se describen a continuación:
       </p>
       <label class="chk" style="font-weight: bold; font-size: 8.5pt; color: var(--azul);">
-        <input type="checkbox" id="acepta_datos" required> Autorizo expresamente el tratamiento de mis datos para la gestión de mi práctica profesional.
+        <input type="checkbox" id="acepta_datos" required> Autorizo el tratamiento de mis datos personales <label id="habeasdata-label" for="acepta_datos"></label> por parte de la Oficina de Prácticas Profesionales ITM para el seguimiento y gestión de mi práctica.
       </label>
     </div>
 
@@ -423,6 +426,10 @@
     <div class="tw">
       <table style="table-layout: fixed; width: 100%;">
         <tr>
+          <p style="font-size: 8pt; text-align: justify; color: #333; line-height: 1.4; margin-bottom: 8px;">
+           Para constancia de lo anterior, firmo en señal de total aceptación y compromiso legal de las responsabilidades aquí consagrada 
+          </p>
+          
           <td class="firma-container" style="width: 50%; border-right: 1px solid var(--gris-m); vertical-align: bottom;">
             <img id="previewEstudiante" class="preview-firma" alt="Firma Estudiante">
             <div style="margin: 5px 0;">
@@ -460,7 +467,7 @@
       "Administración del Deporte", "Ingeniería Financiera y de Negocios", "Ingeniería de Producción", "Ingeniería de la Calidad", "Ingeniería Financiera", "Marketing", "Contaduría Pública"
     ],
     "Exactas": [
-      "Tecnología en Mantenimiento de Equipo Biomédico", "Tecnología en Construcción de Acabados ArquITECTÓNICOS",
+      "Tecnología en Mantenimiento de Equipo Biomédico", "Tecnología en Construcción de Acabados Arquitectónicos",
       "Ingeniería Biomédica", "Ciencias Ambientales", "Ciencia y Tecnología de los Alimentos", "Física", "Química Industrial"
     ],
     "Ingenierias": [
@@ -494,6 +501,30 @@
     if(document.getElementById('nombre')) document.getElementById('nombre').value = nombreDesdeDashboard;
     if(document.getElementById('correo')) document.getElementById('correo').value = correoDesdeDashboard;
   }
+
+  function updateHabeasDataLabel() {
+    const habeasDataContainer = document.getElementById('habeasdata-label');
+    const nombreDesdeDashboard = document.getElementById('nombre')?.value;
+    const ccDesdeDashboard = document.getElementById('documento')?.value;
+    const correoDesdeDashboard = document.getElementById('correo')?.value;
+    const celularDesdeDashboard = document.getElementById('celular')?.value;
+    const programaDesdeDashboard = document.getElementById('programa')?.value;
+
+    if (habeasDataContainer) {
+      habeasDataContainer.innerHTML = `(${nombreDesdeDashboard || 'El estudiante'} con documento ${ccDesdeDashboard || 'N/A'} del programa ${document.getElementById('programa')?.value || 'N/A'} con correo ${correoDesdeDashboard || 'N/A'} y teléfono ${document.getElementById('celular')?.value || 'N/A'})`;
+    }
+  }
+
+  const documentoInput = document.getElementById('documento');
+  const nombreInput = document.getElementById('nombre');
+  const programaInput = document.getElementById('programa');
+  const correoInput = document.getElementById('correo');
+  const celularInput = document.getElementById('celular');
+  documentoInput?.addEventListener('input', updateHabeasDataLabel);
+  nombreInput?.addEventListener('input', updateHabeasDataLabel);
+  programaInput?.addEventListener('input', updateHabeasDataLabel);
+  correoInput?.addEventListener('input', updateHabeasDataLabel);
+  celularInput?.addEventListener('input', updateHabeasDataLabel);
 
   window.addEventListener('DOMContentLoaded', () => {
     const modoRevision = urlParams.get('revisar');
